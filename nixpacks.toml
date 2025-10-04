@@ -12,4 +12,4 @@ cmds = [
 ]
 
 [start]
-cmd = 'cd apps/api && pnpm prisma:migrate deploy && pnpm start:prod'
+cmd = 'cd apps/api && pnpm prisma:migrate deploy && cd ../.. && NODE_ENV=production node apps/api/dist/apps/api/src/main.js'
