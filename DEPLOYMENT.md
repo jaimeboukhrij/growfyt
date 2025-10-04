@@ -17,7 +17,7 @@ Esta guía te ayudará a desplegar tu aplicación en **Vercel** (Frontend) y **R
 
 1. **Ir a [vercel.com](https://vercel.com)** y hacer login
 2. Click en **"Add New Project"**
-3. **Importar tu repositorio** de GitHub/GitLab/Bitbucket
+3. **Importar tu repositorio** de GitHub/GitLab/Bitbucketaz
 4. **Configurar el proyecto:**
 
    - **Framework Preset:** Next.js
@@ -93,18 +93,21 @@ CORS_ORIGIN=https://app.growfyt.com
 5. **Configurar Build y Deploy en Settings → Deploy:**
 
    **Root Directory:** `apps/api`
-   
+
    **Build Command:**
+
    ```bash
    cd ../.. && pnpm install && pnpm --filter growfit-shared build && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate
    ```
-   
+
    **Start Command:**
+
    ```bash
    pnpm prisma:migrate deploy && node dist/apps/api/src/main.js
    ```
 
    **Watch Paths:** (opcional, para deployments automáticos)
+
    ```
    apps/api/**
    packages/shared/**
