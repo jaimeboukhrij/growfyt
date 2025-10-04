@@ -19,6 +19,7 @@ Esta guía te ayudará a desplegar tu aplicación en **Vercel** (Frontend) y **R
 2. Click en **"Add New Project"**
 3. **Importar tu repositorio** de GitHub/GitLab/Bitbucket
 4. **Configurar el proyecto:**
+
    - **Framework Preset:** Next.js
    - **Root Directory:** `apps/client`
    - **Build Command:** `cd ../.. && pnpm install && pnpm --filter growfit-client build`
@@ -26,6 +27,7 @@ Esta guía te ayudará a desplegar tu aplicación en **Vercel** (Frontend) y **R
    - **Install Command:** `pnpm install`
 
 5. **Variables de Entorno:**
+
    ```
    NEXT_PUBLIC_API_URL=https://tu-api.railway.app
    ```
@@ -51,6 +53,7 @@ vercel --prod
 ### Configuración Automática
 
 El archivo `apps/client/vercel.json` ya está configurado con:
+
 - Build command optimizado para monorepo
 - Output directory
 - Framework detection
@@ -87,6 +90,7 @@ CORS_ORIGIN=https://tu-app.vercel.app
 ```
 
 4. **Configurar Build Settings:**
+
    - **Root Directory:** `/` (raíz del monorepo)
    - **Build Command:** `pnpm install && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate`
    - **Start Command:** `cd apps/api && node dist/apps/api/src/main.js`
@@ -115,168 +119,206 @@ Railway también puede usar el `Dockerfile` que hemos creado:
 
 ---
 
-## 🔐 Variables de Entorno
+## 🌍 Configurar Dominio Personalizado (Cloudflare + Vercel)
 
-### Vercel (Client)
+### Client: app.growfyt.com
 
-```env
-NEXT_PUBLIC_API_URL=https://tu-api.railway.app
+#### Paso 1: Agregar Dominio en Vercel
+
+1. Ve a tu proyecto en [Vercel Dashboard](https://vercel.com/dashboard)
+2. Click en tu proyecto del Client
+3. Ve a **Settings → Domains**
+4. Click en **"Add Domain"**
+5. Escribe: `app.growfyt.com`
+6. Click en **"Add"**
+
+Vercel te mostrará los registros DNS que necesitas configurar.
+
+#### Paso 2: Configurar DNS en Cloudflare
+
+1. Ve a [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. Selecciona tu dominio **growfyt.com**
+3. Ve a **DNS → Records**
+4. Click en **"Add record"**
+
+**Agregar registro CNAME:**
+
+```
+Type: CNAME
+Name: app
+Target: cname.vercel-dns.com
+Proxy status: Proxied (nube naranja) o DNS only
+TTL: Auto
 ```
 
-### Railway (API)
+5. Click en **"Save"**
 
-```env
-NODE_ENV=production
-PORT=${{PORT}}
-DATABASE_URL=${{Postgres.DATABASE_URL}}
-CORS_ORIGIN=https://tu-app.vercel.app
+#### Paso 3: Verificar en Vercel
+
+1. Vuelve a Vercel
+2. En **Settings → Domains**, deberías ver `app.growfyt.com`
+3. Espera unos minutos (la verificación puede tardar 1-5 minutos)
+4. Una vez verificado, verás un ✅ verde
+
+#### Paso 4: Configurar SSL (Automático)
+
+- Vercel configurará automáticamente el certificado SSL
+- Si usas Cloudflare en modo "Proxied", asegúrate de:
+  - En Cloudflare: **SSL/TLS → Overview → Full** o **Full (strict)**
+
+### API: api.growfyt.com (Opcional)
+
+Si quieres usar un subdominio para tu API en Railway:
+
+#### En Cloudflare:
+
+```
+Type: CNAME
+Name: api
+Target: tu-servicio.up.railway.app
+Proxy status: Proxied
+TTL: Auto
 ```
 
----
-
-## 🗄️ Migraciones de Base de Datos
-
-### Primera vez (después del despliegue)
-
-Ejecuta las migraciones desde el dashboard de Railway:
+#### En Railway:
 
 1. Ve a tu servicio de API
-2. Click en **"Deploy Logs"**
-3. O usa Railway CLI:
-
-```bash
-# Instalar Railway CLI
-npm i -g @railway/cli
-
-# Login
-railway login
-
-# Seleccionar proyecto
-railway link
-
-# Ejecutar migraciones
-railway run pnpm --filter growfit-api prisma:migrate deploy
-
-# Poblar base de datos (opcional)
-railway run pnpm --filter growfit-api prisma:seed
-```
+2. **Settings → Networking → Custom Domain**
+3. Agrega: `api.growfyt.com`
+4. Railway te dará instrucciones de verificación
 
 ---
 
-## 🔄 CI/CD Automático
+## 🔄 Actualizar Variables de Entorno después del Dominio
 
-### Vercel
+### En Vercel (Client)
 
-✅ **Auto-deploy** cuando haces push a:
-- `main` → Producción
-- Otras ramas → Preview deployments
+Actualiza la variable de entorno:
 
-### Railway
-
-✅ **Auto-deploy** cuando haces push a `main`
-
-Configurar en **Settings → Service → Deploy**:
-- **Watch Paths:** `apps/api/**`, `packages/shared/**`
-- **Auto Deploy:** Enabled
-
----
-
-## 📊 Monitoreo
-
-### Vercel
-- Dashboard: https://vercel.com/dashboard
-- Analytics: Automático
-- Logs: En tiempo real
-
-### Railway
-- Dashboard: https://railway.app/dashboard
-- Logs: En tiempo real
-- Métricas: CPU, RAM, Network
-
----
-
-## 🐛 Troubleshooting
-
-### Error: "Module not found" en Railway
-
-**Solución:** Asegúrate de que el build command incluye:
-```bash
-pnpm install && pnpm --filter growfit-shared build && pnpm --filter growfit-api build
-```
-
-### Error: "Prisma Client not generated"
-
-**Solución:** Añade al build command:
-```bash
-cd apps/api && pnpm prisma:generate
-```
-
-### Error: CORS en producción
-
-**Solución:** Verifica que `CORS_ORIGIN` en Railway apunte a tu dominio de Vercel:
 ```env
-CORS_ORIGIN=https://tu-app.vercel.app
+# Si tu API está en Railway con dominio personalizado
+NEXT_PUBLIC_API_URL=https://api.growfyt.com
+
+# O si usas el dominio de Railway
+NEXT_PUBLIC_API_URL=https://tu-api.up.railway.app
 ```
 
-### Error: Database connection
+### En Railway (API)
 
-**Solución:** Verifica que `DATABASE_URL` en Railway esté correctamente configurado:
+Actualiza CORS_ORIGIN:
+
 ```env
-DATABASE_URL=${{Postgres.DATABASE_URL}}
+CORS_ORIGIN=https://app.growfyt.com
+```
+
+**Después de actualizar:**
+
+1. En Vercel: Redeploy automático
+2. En Railway: Redeploy automático
+
+---
+
+## ✅ Verificación Final
+
+### Checklist de Dominio:
+
+- [ ] `app.growfyt.com` agregado en Vercel
+- [ ] Registro CNAME en Cloudflare configurado
+- [ ] SSL activo (candado 🔒 en el navegador)
+- [ ] Dominio verificado en Vercel (✅)
+- [ ] `CORS_ORIGIN` actualizado en Railway
+- [ ] `NEXT_PUBLIC_API_URL` actualizado en Vercel
+- [ ] Aplicación accesible en `https://app.growfyt.com`
+
+### Probar la configuración:
+
+```bash
+# Verificar que el dominio apunta correctamente
+dig app.growfyt.com
+
+# O con nslookup
+nslookup app.growfyt.com
+
+# Probar en el navegador
+open https://app.growfyt.com
 ```
 
 ---
 
-## 🎯 Checklist de Despliegue
+## 🐛 Troubleshooting Dominios
 
-### Antes de desplegar:
+### Error: "Domain not verified"
 
-- [ ] Código pusheado a GitHub/GitLab
-- [ ] `.env.example` actualizado
-- [ ] `README.md` actualizado
-- [ ] Tests pasando
-- [ ] Build local funciona: `pnpm build`
+**Causa:** DNS no propagado o mal configurado
 
-### Vercel (Client):
+**Solución:**
 
-- [ ] Proyecto creado en Vercel
-- [ ] Root directory: `apps/client`
-- [ ] Build command configurado
-- [ ] Variable `NEXT_PUBLIC_API_URL` configurada
-- [ ] Dominio personalizado (opcional)
+1. Verifica el registro CNAME en Cloudflare
+2. Espera 5-10 minutos para propagación
+3. Usa [DNS Checker](https://dnschecker.org) para verificar
 
-### Railway (API):
+### Error: "Too many redirects"
 
-- [ ] Proyecto creado en Railway
-- [ ] PostgreSQL agregado
-- [ ] Variables de entorno configuradas
-- [ ] Build command configurado
-- [ ] Migraciones ejecutadas
-- [ ] Dominio público generado
-- [ ] Base de datos poblada (opcional)
+**Causa:** Configuración SSL incorrecta en Cloudflare
 
-### Final:
+**Solución:**
 
-- [ ] Client puede comunicarse con API
-- [ ] CORS configurado correctamente
-- [ ] SSL/HTTPS habilitado
-- [ ] Logs sin errores
+1. En Cloudflare: **SSL/TLS → Overview**
+2. Cambiar a **"Full"** o **"Full (strict)"**
+3. Esperar 1-2 minutos
 
----
+### Error: "Invalid Host header"
 
-## 📚 Recursos
+**Causa:** Next.js no reconoce el dominio
 
-- [Vercel Docs](https://vercel.com/docs)
-- [Railway Docs](https://docs.railway.app)
-- [Prisma Deploy](https://www.prisma.io/docs/guides/deployment)
-- [Next.js Deployment](https://nextjs.org/docs/deployment)
+**Solución:**
+En `next.config.js`, no necesitas hacer nada. Vercel lo maneja automáticamente.
+
+### API CORS Error después de cambiar dominio
+
+**Causa:** `CORS_ORIGIN` no actualizado
+
+**Solución:**
+
+1. Ve a Railway → Variables de entorno
+2. Actualiza: `CORS_ORIGIN=https://app.growfyt.com`
+3. Railway redeployará automáticamente
 
 ---
 
-## 🆘 Soporte
+## 🎯 Resumen de Dominios
 
-Si tienes problemas:
-1. Revisa los logs en Vercel/Railway
-2. Verifica las variables de entorno
-3. Comprueba que el build funciona localmente
-4. Consulta la documentación oficial
+| Servicio  | Dominio                         | Plataforma |
+| --------- | ------------------------------- | ---------- |
+| Client    | `app.growfyt.com`               | Vercel     |
+| API       | `api.growfyt.com` o Railway URL | Railway    |
+| Principal | `growfyt.com`                   | (Opcional) |
+
+---
+
+## 🔐 Configuración de Cloudflare Recomendada
+
+### Para mejor seguridad y rendimiento:
+
+1. **SSL/TLS:**
+
+   - Mode: Full (strict)
+   - Always Use HTTPS: On
+   - Minimum TLS Version: 1.2
+
+2. **Speed:**
+
+   - Auto Minify: HTML, CSS, JS
+   - Brotli: On
+   - HTTP/2: On
+
+3. **Caching:**
+
+   - Browser Cache TTL: 4 hours
+   - Development Mode: Off (en producción)
+
+4. **Firewall:**
+   - Security Level: Medium
+   - Challenge Passage: 30 minutes
+
+---

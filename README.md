@@ -2,6 +2,14 @@
 
 Monorepo moderno para GrowFit usando **Turborepo + pnpm workspaces**.
 
+## 🌐 URLs de Producción
+
+- **Client:** https://app.growfyt.com
+- **API:** https://api.growfyt.com (o Railway URL)
+- **Sitio Web:** https://growfyt.com
+
+---
+
 ## 📦 Estructura del Proyecto
 
 ```
@@ -214,7 +222,6 @@ Para desplegar la aplicación en producción, consulta la guía completa: **[DEP
 - **Client (Next.js)** → Desplegar en **Vercel**
   - Root directory: `apps/client`
   - Build command: `cd ../.. && pnpm install && pnpm --filter growfit-client build`
-  
 - **API (NestJS) + PostgreSQL** → Desplegar en **Railway**
   - Root directory: `/` (monorepo root)
   - Build command: `pnpm install && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate`

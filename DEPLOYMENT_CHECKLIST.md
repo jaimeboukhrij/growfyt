@@ -12,11 +12,13 @@
 ## Vercel (Client - Next.js)
 
 ### Configuración Inicial
+
 - [ ] Cuenta creada en [vercel.com](https://vercel.com)
 - [ ] Repositorio conectado
 - [ ] Proyecto importado
 
 ### Configuración del Build
+
 - [ ] **Framework Preset:** Next.js
 - [ ] **Root Directory:** `apps/client`
 - [ ] **Build Command:** `cd ../.. && pnpm install && pnpm --filter growfit-client build`
@@ -24,9 +26,11 @@
 - [ ] **Install Command:** `pnpm install`
 
 ### Variables de Entorno
+
 - [ ] `NEXT_PUBLIC_API_URL` configurada (URL del API en Railway)
 
 ### Verificación
+
 - [ ] Deployment exitoso
 - [ ] URL funciona correctamente
 - [ ] Logs sin errores críticos
@@ -37,30 +41,36 @@
 ## Railway (API + PostgreSQL)
 
 ### Base de Datos
+
 - [ ] Proyecto creado en [railway.app](https://railway.app)
 - [ ] PostgreSQL agregado al proyecto
 - [ ] `DATABASE_URL` copiada
 
 ### Configuración del API
+
 - [ ] Servicio del API creado
 - [ ] Repositorio conectado
 
 ### Variables de Entorno
+
 - [ ] `NODE_ENV=production`
 - [ ] `PORT=${{PORT}}`
 - [ ] `DATABASE_URL=${{Postgres.DATABASE_URL}}`
 - [ ] `CORS_ORIGIN` configurado con URL de Vercel
 
 ### Build Configuration
+
 - [ ] **Root Directory:** `/` (raíz del monorepo)
 - [ ] **Build Command:** `pnpm install && pnpm --filter growfit-shared build && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate`
 - [ ] **Start Command:** `cd apps/api && node dist/apps/api/src/main.js`
 
 ### Migraciones
+
 - [ ] Migraciones ejecutadas: `railway run pnpm --filter growfit-api prisma:migrate deploy`
 - [ ] Base de datos poblada (opcional): `railway run pnpm --filter growfit-api prisma:seed`
 
 ### Verificación
+
 - [ ] Deployment exitoso
 - [ ] URL pública generada
 - [ ] Logs sin errores
@@ -72,11 +82,13 @@
 ## Post-Despliegue
 
 ### Integración
+
 - [ ] `NEXT_PUBLIC_API_URL` en Vercel actualizada con URL de Railway
 - [ ] `CORS_ORIGIN` en Railway actualizada con URL de Vercel
 - [ ] Ambos servicios re-desplegados
 
 ### Testing en Producción
+
 - [ ] Homepage carga correctamente
 - [ ] API responde en `/api/health`
 - [ ] CORS funciona correctamente
@@ -84,6 +96,7 @@
 - [ ] Datos se cargan desde el API
 
 ### Dominios (Opcional)
+
 - [ ] Dominio personalizado configurado en Vercel
 - [ ] Dominio personalizado configurado en Railway
 - [ ] DNS propagado
@@ -127,18 +140,23 @@ vercel --prod
 ## Troubleshooting
 
 ### ❌ Build falla en Vercel
+
 **Solución:** Verifica que el build command incluya la instalación desde la raíz del monorepo
 
 ### ❌ Module not found en Railway
+
 **Solución:** Asegúrate de construir `growfit-shared` antes que `growfit-api`
 
 ### ❌ CORS error
+
 **Solución:** Verifica que `CORS_ORIGIN` en Railway coincida con tu URL de Vercel
 
 ### ❌ Database connection failed
+
 **Solución:** Verifica que `DATABASE_URL` esté correctamente configurada como `${{Postgres.DATABASE_URL}}`
 
 ### ❌ 502 Bad Gateway en Railway
+
 **Solución:** Revisa los logs para ver si el servidor está escuchando en el puerto correcto (`${{PORT}}`)
 
 ---
@@ -146,6 +164,7 @@ vercel --prod
 ## 🎉 ¡Listo!
 
 Una vez completados todos los pasos, tu aplicación estará:
+
 - ✅ Desplegada en producción
 - ✅ Con SSL/HTTPS
 - ✅ Con auto-deploy habilitado

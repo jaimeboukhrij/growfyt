@@ -12,7 +12,8 @@
     "start": "turbo run start",
     "clean": "turbo run clean",
     "type-check": "turbo run type-check",
-    "prepare-deploy": "bash scripts/prepare-deploy.sh"
+    "prepare-deploy": "bash scripts/prepare-deploy.sh",
+    "verify-domains": "bash scripts/verify-domains.sh"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
