@@ -1,8 +1,0 @@
-build:
-  context: .
-  dockerfile: apps/api/Dockerfile
-
-deploy:
-  replicas: 1
-  restart_policy:
-    condition: on-failure
