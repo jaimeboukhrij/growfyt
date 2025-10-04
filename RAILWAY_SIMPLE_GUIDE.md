@@ -146,11 +146,11 @@ pnpm prisma:migrate deploy && ...
 - ❌ `railway.toml` - No es necesario
 - ❌ `railway.json` - No es necesario
 - ❌ `Dockerfile` - Railway usa Nixpacks automáticamente
-- ❌ `nixpacks.toml` - Opcional, solo si necesitas configuración avanzada
+- ✅ `nixpacks.toml` - **SÍ necesario para monorepos con pnpm** (ya está creado)
 
 Railway detecta automáticamente:
 - ✅ Que es un proyecto Node.js
-- ✅ Que usa pnpm
+- ✅ Que usa pnpm (gracias a nixpacks.toml)
 - ✅ Que necesita instalar dependencias
 - ✅ El puerto donde debe escuchar
 
