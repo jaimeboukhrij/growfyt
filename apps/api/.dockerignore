@@ -1,0 +1,8 @@
+# Ignorar en Railway/Docker
+node_modules
+dist
+.next
+.turbo
+*.log
+.env.local
+.DS_Store
