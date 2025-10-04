@@ -72,7 +72,7 @@ Value: https://tu-api.up.railway.app
 ### En Railway (tu API):
 
 1. Ve a tu servicio API
-2. **Variables**
+2. **Settings → Variables**
 3. Editar o agregar:
 
 ```
@@ -80,8 +80,21 @@ Name: CORS_ORIGIN
 Value: https://app.growfyt.com
 ```
 
-4. **Save**
-5. Railway hará redeploy automáticamente
+4. **Settings → Deploy** - Configurar comandos:
+
+**Root Directory:** `apps/api`
+
+**Build Command:**
+```bash
+cd ../.. && pnpm install && pnpm --filter growfit-shared build && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate
+```
+
+**Start Command:**
+```bash
+pnpm prisma:migrate deploy && node dist/apps/api/src/main.js
+```
+
+5. Railway redeployará automáticamente
 
 ## ✅ Verificar
 

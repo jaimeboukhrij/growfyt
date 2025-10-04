@@ -80,35 +80,37 @@ El archivo `apps/client/vercel.json` ya está configurado con:
 
 1. Click en **"+ New"** → **"Empty Service"**
 2. Conectar tu repositorio
-3. **Configurar variables de entorno:**
+3. Railway detectará automáticamente que es un proyecto Node.js
+
+4. **Configurar variables de entorno en Settings → Variables:**
 
 ```bash
 NODE_ENV=production
-PORT=${{PORT}}  # Railway lo asigna automáticamente
-DATABASE_URL=${{Postgres.DATABASE_URL}}  # Referencia a tu BD
-CORS_ORIGIN=https://tu-app.vercel.app
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+CORS_ORIGIN=https://app.growfyt.com
 ```
 
-4. **Configurar Build Settings:**
+5. **Configurar Build y Deploy en Settings → Deploy:**
 
-   - **Root Directory:** `/` (raíz del monorepo)
-   - **Build Command:** `pnpm install && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate`
-   - **Start Command:** `cd apps/api && node dist/apps/api/src/main.js`
-
-5. **Ejecutar migraciones:**
-   - Ve a la pestaña **"Settings" → "Deploy"**
-   - En **"Deploy Command"** añade antes del start:
+   **Root Directory:** `apps/api`
+   
+   **Build Command:**
    ```bash
-   cd apps/api && pnpm prisma:migrate deploy && cd ../.. && cd apps/api && node dist/apps/api/src/main.js
+   cd ../.. && pnpm install && pnpm --filter growfit-shared build && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate
+   ```
+   
+   **Start Command:**
+   ```bash
+   pnpm prisma:migrate deploy && node dist/apps/api/src/main.js
    ```
 
-### Opción con Dockerfile
+   **Watch Paths:** (opcional, para deployments automáticos)
+   ```
+   apps/api/**
+   packages/shared/**
+   ```
 
-Railway también puede usar el `Dockerfile` que hemos creado:
-
-1. Railway detectará automáticamente el `Dockerfile` en `apps/api/`
-2. Construirá la imagen y la desplegará
-3. Solo necesitas configurar las variables de entorno
+⚠️ **Nota:** Railway asigna automáticamente el puerto con la variable `PORT`. No necesitas configurarla manualmente.
 
 ### Paso 4: Configurar Dominio
 
