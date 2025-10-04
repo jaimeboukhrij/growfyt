@@ -39,7 +39,8 @@ CORS_ORIGIN=https://app.growfyt.com
 DATABASE_URL=${{Postgres.DATABASE_URL}}
 ```
 
-⚠️ **Importante:** 
+⚠️ **Importante:**
+
 - `DATABASE_URL` usa `${{Postgres.DATABASE_URL}}` (Railway lo referencia automáticamente)
 - **NO** necesitas configurar `PORT`, Railway lo hace automáticamente
 
@@ -49,21 +50,25 @@ DATABASE_URL=${{Postgres.DATABASE_URL}}
 2. Configurar:
 
 **Root Directory:**
+
 ```
 apps/api
 ```
 
 **Build Command:**
+
 ```bash
 cd ../.. && pnpm install && pnpm --filter growfit-shared build && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate
 ```
 
 **Start Command:**
+
 ```bash
 pnpm prisma:migrate deploy && node dist/apps/api/src/main.js
 ```
 
 **Watch Paths (opcional):**
+
 ```
 apps/api/**
 packages/shared/**
@@ -109,7 +114,7 @@ curl https://tu-api.up.railway.app/api/health
 ```typescript
 // apps/api/src/main.ts
 const port = process.env.PORT || 3001;
-await app.listen(port, '0.0.0.0');
+await app.listen(port, "0.0.0.0");
 ```
 
 ### ❌ Error: Prisma Client not found
@@ -117,6 +122,7 @@ await app.listen(port, '0.0.0.0');
 **Causa:** `prisma:generate` no se ejecutó
 
 **Solución:** Asegúrate de que el Build Command incluye:
+
 ```bash
 && cd apps/api && pnpm prisma:generate
 ```
@@ -126,6 +132,7 @@ await app.listen(port, '0.0.0.0');
 **Causa:** `DATABASE_URL` mal configurada
 
 **Solución:** Usa la referencia de Railway:
+
 ```env
 DATABASE_URL=${{Postgres.DATABASE_URL}}
 ```
@@ -135,6 +142,7 @@ DATABASE_URL=${{Postgres.DATABASE_URL}}
 **Causa:** El Start Command no incluye migraciones
 
 **Solución:** Asegúrate de que el Start Command empiece con:
+
 ```bash
 pnpm prisma:migrate deploy && ...
 ```
@@ -149,6 +157,7 @@ pnpm prisma:migrate deploy && ...
 - ✅ `nixpacks.toml` - **SÍ necesario para monorepos con pnpm** (ya está creado)
 
 Railway detecta automáticamente:
+
 - ✅ Que es un proyecto Node.js
 - ✅ Que usa pnpm (gracias a nixpacks.toml)
 - ✅ Que necesita instalar dependencias
@@ -159,11 +168,13 @@ Railway detecta automáticamente:
 ## 📝 Resumen
 
 **Variables obligatorias:**
+
 - `NODE_ENV=production`
 - `CORS_ORIGIN=https://app.growfyt.com`
 - `DATABASE_URL=${{Postgres.DATABASE_URL}}`
 
 **Comandos importantes:**
+
 - **Build:** Instalar, compilar, generar Prisma
 - **Start:** Migrar DB y ejecutar servidor
 

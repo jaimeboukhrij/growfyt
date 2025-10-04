@@ -85,11 +85,13 @@ Value: https://app.growfyt.com
 **Root Directory:** `apps/api`
 
 **Build Command:**
+
 ```bash
 cd ../.. && pnpm install && pnpm --filter growfit-shared build && pnpm --filter growfit-api build && cd apps/api && pnpm prisma:generate
 ```
 
 **Start Command:**
+
 ```bash
 pnpm prisma:migrate deploy && node dist/apps/api/src/main.js
 ```
