@@ -8,8 +8,10 @@ cmds = ['pnpm install --frozen-lockfile']
 cmds = [
   'pnpm --filter growfit-shared build',
   'pnpm --filter growfit-api build',
-  'cd apps/api && pnpm prisma:generate'
+  'cd apps/api && pnpm prisma:generate',
+  'ls -la packages/shared/dist || echo "Shared dist not found"',
+  'ls -la node_modules/growfit-shared || echo "Shared in node_modules not found"'
 ]
 
 [start]
-cmd = 'cd apps/api && pnpm prisma:migrate deploy && cd ../.. && NODE_ENV=production node apps/api/dist/apps/api/src/main.js'
+cmd = 'cd apps/api && pnpm prisma:migrate deploy && pnpm start:prod'
