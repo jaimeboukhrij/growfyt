@@ -1,167 +1,141 @@
-# 🏋️ GrowFit - Monorepo
+# 🚀 GrowFyt - Monorepo
 
-Monorepo moderno para GrowFit usando **Turborepo + pnpm workspaces**.
+Aplicación fullstack construida con NestJS, Next.js y Prisma en un monorepo con TurboRepo.
 
-## 🌐 URLs de Producción
+## 🌐 Aplicación en Vivo
 
-- **Client:** https://app.growfyt.com
-- **API:** https://api.growfyt.com (o Railway URL)
-- **Sitio Web:** https://growfyt.com
-
----
+- **API**: https://api.growfyt.com
+- **Cliente**: https://growfyt.com
+- **Health Check**: https://api.growfyt.com/api/health
 
 ## 📦 Estructura del Proyecto
 
 ```
 growfit/
 ├── apps/
-│   ├── client/          # Next.js 15 + Tailwind CSS + React 19
-│   └── api/             # NestJS 11 + Prisma + PostgreSQL
+│   ├── api/          # Backend NestJS + Prisma
+│   └── client/       # Frontend Next.js 15
 ├── packages/
-│   └── shared/          # Código compartido (TypeScript)
-├── turbo.json           # Configuración de Turborepo
-├── pnpm-workspace.yaml  # Configuración de pnpm workspaces
-└── package.json         # Scripts del monorepo
+│   └── shared/       # Código compartido (tipos, utilidades)
+├── scripts/          # Scripts de deployment
+└── documentation/    # Documentación del proyecto
 ```
+
+## 🛠️ Stack Tecnológico
+
+- **Backend**: NestJS 10, Prisma 6, PostgreSQL
+- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
+- **Monorepo**: TurboRepo + pnpm workspaces
+- **Deployment**: Railway
+- **Node**: v20.x
 
 ## 🚀 Inicio Rápido
 
-### Prerrequisitos
-
-- Node.js >= 18.0.0
-- pnpm >= 8.0.0
-- Docker (para PostgreSQL)
-
-### Instalación
-
 ```bash
-# Instalar dependencias
+# 1. Instalar dependencias
 pnpm install
 
-# Iniciar base de datos PostgreSQL en Docker
-docker run --name growfit-postgres \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=growfit \
-  -p 5432:5432 \
-  -v growfit-db-data:/var/lib/postgresql/data \
-  -d postgres:15
+# 2. Configurar base de datos
+cp apps/api/.env.example apps/api/.env
+# Editar DATABASE_URL en apps/api/.env
 
-# Generar Prisma Client y ejecutar migraciones
+# 3. Setup Prisma
 cd apps/api
 pnpm prisma:generate
 pnpm prisma:migrate
-pnpm prisma:seed
 cd ../..
-```
 
-## 🛠️ Comandos Disponibles
-
-### Modo Desarrollo
-
-```bash
-# Iniciar todo en modo desarrollo (API + Client)
+# 4. Iniciar en desarrollo
+cd apps/api
 pnpm dev
-
-# Iniciar solo el API
-pnpm --filter growfit-api dev
-
-# Iniciar solo el Client
-pnpm --filter growfit-client dev
 ```
 
-**URLs en desarrollo:**
+La API estará en `http://localhost:3001` y el cliente en `http://localhost:3000`.
 
-- 🌐 Client: http://localhost:3000
-- 🔌 API: http://localhost:3001
-- 📊 Prisma Studio: `pnpm --filter growfit-api prisma:studio`
-
-### Modo Producción
+## � Scripts Principales
 
 ```bash
-# 1. Construir todo el proyecto
-pnpm build
+# Desarrollo
+pnpm dev              # Inicia todos los proyectos
+pnpm dev:api          # Solo API
+pnpm dev:client       # Solo Client
 
-# 2. Iniciar en modo producción
-pnpm start
+# Build
+pnpm build            # Build todos los proyectos
+
+# Prisma
+pnpm --filter=growfit-api prisma:generate  # Generar Prisma Client
+pnpm --filter=growfit-api prisma:migrate   # Ejecutar migraciones
+pnpm --filter=growfit-api prisma:studio    # Abrir Prisma Studio
+
+# Type checking
+pnpm type-check       # Verificar tipos TypeScript
 ```
 
-**URLs en producción:**
+## 📚 Documentación
 
-- 🌐 Client: http://localhost:3000
-- 🔌 API: http://localhost:3001
+- **[Inicio Rápido](./documentation/QUICKSTART.md)** - Setup inicial y primeros pasos
+- **[Arquitectura](./documentation/ARCHITECTURE.md)** - Decisiones de arquitectura
+- **[Desarrollo](./documentation/DEVELOPMENT.md)** - Guía de desarrollo y convenciones
+- **[Deployment](./documentation/DEPLOYMENT.md)** - Deploy en Railway
 
-### Otros Comandos
+## 🏗️ Características
+
+### API (NestJS)
+
+- ✅ Arquitectura modular
+- ✅ Prisma ORM con PostgreSQL
+- ✅ Validación con class-validator
+- ✅ Respuestas estandarizadas
+- ✅ Health check endpoint
+- ✅ Hot reload en desarrollo
+
+### Client (Next.js)
+
+- ✅ App Router (Next.js 15)
+- ✅ Server Components por defecto
+- ✅ TypeScript estricto
+- ✅ Tailwind CSS
+- ✅ Turbopack (build rápido)
+
+### Shared Package
+
+- ✅ Tipos TypeScript compartidos
+- ✅ Constantes comunes
+- ✅ Build automático con Turbo
+
+## 🔧 Requisitos
+
+- **Node.js**: v20.x o superior
+- **pnpm**: v9.x
+- **PostgreSQL**: v14 o superior
+
+## 🌐 Deployment
+
+El proyecto está configurado para deployment automático en Railway:
 
 ```bash
-# Type-checking
-pnpm type-check
-
-# Limpiar archivos compilados
-pnpm clean
-
-# Ver datos en la base de datos
-pnpm --filter growfit-api prisma:studio
+git push origin main  # Auto-deploya a Railway
 ```
 
-## 📁 Apps
+Ver [DEPLOYMENT.md](./documentation/DEPLOYMENT.md) para más detalles.
 
-### Client (Next.js 15)
+## 🤝 Contribuir
 
-- **Framework:** Next.js 15 con App Router
-- **Styling:** Tailwind CSS 4
-- **UI:** React 19
-- **Puerto:** 3000
+1. Crea una rama desde `main`
+2. Haz tus cambios
+3. Asegúrate de que `pnpm build` funciona
+4. Commit con [Conventional Commits](https://www.conventionalcommits.org/)
+5. Push y crea un PR
 
-```bash
-cd apps/client
-pnpm dev        # Desarrollo
-pnpm build      # Build
-pnpm start      # Producción
-```
+## 📄 Licencia
 
-### API (NestJS 11)
+Copyright © 2025 GrowFyt
 
-- **Framework:** NestJS 11
-- **Database:** PostgreSQL + Prisma ORM
-- **Puerto:** 3001
+---
 
-```bash
-cd apps/api
-pnpm dev                # Desarrollo
-pnpm build              # Build
-pnpm start              # Producción
-pnpm prisma:generate    # Generar Prisma Client
-pnpm prisma:migrate     # Ejecutar migraciones
-pnpm prisma:studio      # Abrir Prisma Studio
-pnpm prisma:seed        # Poblar base de datos
-```
+Para más información, consulta la [documentación completa](./documentation/README.md).
 
-## 🗄️ Base de Datos
-
-### Gestión de PostgreSQL con Docker
-
-```bash
-# Iniciar contenedor
-docker start growfit-postgres
-
-# Detener contenedor
-docker stop growfit-postgres
-
-# Ver logs
-docker logs growfit-postgres
-
-# Eliminar contenedor (¡cuidado! elimina los datos)
-docker rm -f growfit-postgres
-```
-
-### Comandos de Prisma
-
-```bash
-cd apps/api
-
-# Generar Prisma Client
-pnpm prisma:generate
 
 # Crear y aplicar migración
 pnpm prisma:migrate
