@@ -1,6 +1,4 @@
-
-
-export default function DashboardPage() {
+export default function DashboardPage () {
   return (
     <section>
       hola
