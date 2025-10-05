@@ -5,6 +5,14 @@ echo "🚀 Starting Railway deployment process..."
 
 # Step 1: Build shared package
 echo "📦 Building growfit-shared..."
+echo "🔍 Current directory: $(pwd)"
+
+# Clean any previous build artifacts and incremental build cache
+echo "🧹 Cleaning previous build artifacts and cache..."
+rm -rf packages/shared/dist packages/shared/tsconfig.tsbuildinfo
+
+# Build shared package
+echo "🔨 Compiling growfit-shared..."
 pnpm --filter growfit-shared build
 
 # Verify shared package build
@@ -12,6 +20,12 @@ if [ ! -d "packages/shared/dist" ]; then
     echo "❌ ERROR: packages/shared/dist directory not found after build"
     echo "📁 Contents of packages/shared:"
     ls -la packages/shared/
+    echo "📋 TypeScript version:"
+    npx tsc --version
+    echo "🔍 Showing TypeScript configuration:"
+    cd packages/shared
+    npx tsc --showConfig
+    cd ../..
     exit 1
 fi
 
@@ -39,6 +53,8 @@ cd ../..
 mkdir -p apps/api/node_modules/growfit-shared
 cp -r packages/shared/dist apps/api/node_modules/growfit-shared/
 cp packages/shared/package.json apps/api/node_modules/growfit-shared/
+
+echo "✅ Build and setup completed successfully!"
 
 # Step 6: Start the application
 echo "🎯 Starting application..."

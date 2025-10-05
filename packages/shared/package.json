@@ -13,10 +13,10 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc --project tsconfig.json",
     "dev": "tsc --watch",
     "start": "echo 'Shared package does not need to start'",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {

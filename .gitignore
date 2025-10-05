@@ -10,6 +10,10 @@ coverage
 dist
 build
 
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
 # Misc
 .DS_Store
 *.pem
