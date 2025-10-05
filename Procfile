@@ -1,1 +1,1 @@
-web: cd apps/api && node dist/apps/api/src/main.js
+web: cd apps/api && pnpm prisma:migrate deploy && cd ../.. && cp -r packages/shared/dist apps/api/node_modules/growfit-shared/ && cp packages/shared/package.json apps/api/node_modules/growfit-shared/ && cd apps/api && node dist/apps/api/src/main.js

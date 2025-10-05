@@ -9,8 +9,9 @@ cmds = [
   'pnpm --filter growfit-shared build',
   'pnpm --filter growfit-api build',
   'cd apps/api && pnpm prisma:generate',
-  'ls -la packages/shared/dist || echo "Shared dist not found"',
-  'ls -la node_modules/growfit-shared || echo "Shared in node_modules not found"'
+  'mkdir -p apps/api/node_modules/growfit-shared',
+  'cp -r packages/shared/dist apps/api/node_modules/growfit-shared/',
+  'cp packages/shared/package.json apps/api/node_modules/growfit-shared/'
 ]
 
 [start]
