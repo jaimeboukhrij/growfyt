@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/main.ts",
+    "prebuild": "prisma generate",
     "build": "tsc -p tsconfig.build.json",
     "start": "NODE_ENV=production node dist/apps/api/src/main",
     "start:prod": "NODE_ENV=production node dist/apps/api/src/main",

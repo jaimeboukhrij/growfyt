@@ -1,62 +1,47 @@
-#!/bin/bash
-set -e  # Exit on error
+#!/bin/ba# Step 2: Build all packages using Turbo (this will automatically run prisma:generate first)
+echo "🔧 Building all packages with Turbo (including Prisma generation)..."
+pnpm turbo run build  # Exit on error
 
 echo "🚀 Starting Railway deployment process..."
 
-# Step 1: Build shared package
-echo "📦 Building growfit-shared..."
-echo "🔍 Current directory: $(pwd)"
+# Step 1: Clean cache files
+echo "🧹 Cleaning TypeScript incremental build cache..."
+rm -rf packages/shared/tsconfig.tsbuildinfo apps/api/tsconfig.build.tsbuildinfo
 
-# Clean any previous build artifacts and incremental build cache
-echo "🧹 Cleaning previous build artifacts and cache..."
-rm -rf packages/shared/dist packages/shared/tsconfig.tsbuildinfo
+# Step 2: Generate Prisma Client first (critical for TypeScript compilation)
+echo "🔧 Generating Prisma client..."
+cd apps/api
+npx prisma generate
+cd ../..
 
-# Build shared package
-echo "🔨 Compiling growfit-shared..."
-pnpm --filter growfit-shared build
+# Step 3: Build all packages using Turbo
+echo "� Building all packages with Turbo..."
+pnpm turbo run build
 
-# Verify shared package build
+# Verify builds completed
 if [ ! -d "packages/shared/dist" ]; then
     echo "❌ ERROR: packages/shared/dist directory not found after build"
-    echo "📁 Contents of packages/shared:"
-    ls -la packages/shared/
-    echo "📋 TypeScript version:"
-    npx tsc --version
-    echo "🔍 Showing TypeScript configuration:"
-    cd packages/shared
-    npx tsc --showConfig
-    cd ../..
     exit 1
 fi
 
-echo "✅ Shared package built successfully"
-echo "📁 Contents of packages/shared/dist:"
-ls -la packages/shared/dist/
+echo "✅ All packages built successfully"
 
-# Step 2: Build API
-echo "📦 Building growfit-api..."
-pnpm --filter growfit-api build
-
-# Step 3: Generate Prisma client
-echo "🔧 Generating Prisma client..."
+# Step 3: Database migrations
+echo "�️  Running database migrations..."
 cd apps/api
-pnpm prisma:generate
-
-# Step 4: Database setup
-echo "🗄️  Setting up database..."
 npx prisma migrate reset --force || npx prisma db push --force-reset
 npx prisma migrate deploy
-
-# Step 5: Copy shared package to API node_modules
-echo "📋 Copying shared package to API..."
 cd ../..
+
+# Step 4: Copy shared package to API node_modules (workaround for Railway)
+echo "📋 Copying shared package to API..."
 mkdir -p apps/api/node_modules/growfit-shared
 cp -r packages/shared/dist apps/api/node_modules/growfit-shared/
 cp packages/shared/package.json apps/api/node_modules/growfit-shared/
 
 echo "✅ Build and setup completed successfully!"
 
-# Step 6: Start the application
+# Step 5: Start the application
 echo "🎯 Starting application..."
 cd apps/api
 node dist/apps/api/src/main.js
