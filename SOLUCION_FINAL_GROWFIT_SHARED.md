@@ -5,6 +5,7 @@
 **Railway usa Procfile en lugar de nixpacks.toml cuando ambos existen.**
 
 Los logs mostraron:
+
 ```
 ↳ Found web command in Procfile
 Deploy: $ cd apps/api && node dist/apps/api/src/main.js
@@ -19,11 +20,13 @@ El Procfile tenía el comando incorrecto que no copiaba el paquete `growfit-shar
 ### Actualizado `Procfile`:
 
 **ANTES (❌):**
+
 ```
 web: cd apps/api && node dist/apps/api/src/main.js
 ```
 
 **AHORA (✅):**
+
 ```
 web: cd apps/api && pnpm prisma:migrate deploy && cd ../.. && cp -r packages/shared/dist apps/api/node_modules/growfit-shared/ && cp packages/shared/package.json apps/api/node_modules/growfit-shared/ && cd apps/api && node dist/apps/api/src/main.js
 ```
@@ -33,6 +36,7 @@ web: cd apps/api && pnpm prisma:migrate deploy && cd ../.. && cp -r packages/sha
 ## 🔍 ¿Por Qué Funciona?
 
 ### El Problema Original:
+
 1. pnpm crea un **symlink** en `apps/api/node_modules/growfit-shared` → `../../../packages/shared`
 2. En Railway, cuando ejecutamos desde `apps/api/`, el symlink **funciona**
 3. PERO el `dist/` del shared **NO estaba siendo copiado** porque:
@@ -41,6 +45,7 @@ web: cd apps/api && pnpm prisma:migrate deploy && cd ../.. && cp -r packages/sha
    - Pero cuando Railway crea la imagen de deployment, **no copia el dist/**
 
 ### La Solución:
+
 1. **Copiar físicamente** `packages/shared/dist/` a `apps/api/node_modules/growfit-shared/dist/`
 2. **Copiar** `packages/shared/package.json` a `apps/api/node_modules/growfit-shared/`
 3. Ahora `apps/api/node_modules/growfit-shared/` tiene TODO lo necesario
@@ -102,6 +107,7 @@ node dist/apps/api/src/main.js
 ### En Railway Logs:
 
 Deberías ver:
+
 ```bash
 ✅ pnpm prisma:migrate deploy
 ✅ (copiando archivos)
@@ -127,11 +133,11 @@ curl https://api.growfyt.com/api/health
 
 ## 🎯 Diferencia Entre nixpacks.toml y Procfile
 
-| Archivo | Prioridad | Cuándo usar |
-|---------|-----------|-------------|
-| `Procfile` | **ALTA** | Railway lo detecta automáticamente si existe |
-| `nixpacks.toml` | Media | Solo si NO hay Procfile |
-| `railway.toml` | Baja | Legacy, ya no recomendado |
+| Archivo         | Prioridad | Cuándo usar                                  |
+| --------------- | --------- | -------------------------------------------- |
+| `Procfile`      | **ALTA**  | Railway lo detecta automáticamente si existe |
+| `nixpacks.toml` | Media     | Solo si NO hay Procfile                      |
+| `railway.toml`  | Baja      | Legacy, ya no recomendado                    |
 
 **Conclusión:** Si tienes Procfile, Railway lo usará y ignorará nixpacks.toml
 
@@ -140,13 +146,16 @@ curl https://api.growfyt.com/api/health
 ## 🐛 Por Qué Fallaban las Soluciones Anteriores
 
 1. **Modificar nixpacks.toml** ❌
+
    - Railway ignoraba nixpacks.toml porque había un Procfile
 
 2. **Ejecutar desde la raíz** ❌
+
    - El problema no era el directorio de ejecución
    - El problema era que `dist/` del shared no estaba en node_modules
 
 3. **Usar NODE_PATH** ❌
+
    - No resolvía el problema real (falta de archivos)
 
 4. **Copiar en nixpacks.toml** ❌
@@ -187,6 +196,7 @@ curl https://api.growfyt.com/api/health
 ### 3. Configurar Variables de Entorno (si falta):
 
 En Railway → Variables:
+
 ```env
 DATABASE_URL=postgresql://... (ya debe estar)
 NODE_ENV=production
@@ -196,6 +206,7 @@ CORS_ORIGIN=https://app.growfyt.com
 ### 4. Configurar Dominio Personalizado:
 
 Si aún no lo hiciste:
+
 1. Railway → Settings → Networking → Custom Domain
 2. Añadir: `api.growfyt.com`
 3. Copiar el CNAME target
@@ -233,6 +244,7 @@ Si aún no lo hiciste:
 ## 🆘 Si Aún No Funciona
 
 Comparte:
+
 1. **Screenshot completo** del deployment en Railway
 2. **Logs completos** (desde Build hasta Deploy)
 3. **Output del comando:** `curl -v https://api.growfyt.com/api/health`

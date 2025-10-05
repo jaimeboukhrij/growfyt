@@ -67,6 +67,7 @@ CORS_ORIGIN=https://app.growfyt.com
 ```
 
 Para añadir la variable:
+
 1. **Variables** tab en Railway
 2. **New Variable**
 3. Name: `CORS_ORIGIN`
@@ -118,6 +119,7 @@ curl https://api.growfyt.com/api/health
 ### ❌ "Domain not verified"
 
 **Solución:**
+
 - Verifica que el CNAME en Cloudflare esté correcto
 - Espera 5-10 minutos más para propagación DNS
 - Verifica en: https://dnschecker.org/#CNAME/api.growfyt.com
@@ -125,18 +127,21 @@ curl https://api.growfyt.com/api/health
 ### ❌ "Too many redirects"
 
 **Solución:**
+
 - Cloudflare SSL mode → **Full (strict)**
 - No uses "Flexible"
 
 ### ❌ "Certificate error"
 
 **Solución:**
+
 - Espera 1-2 minutos para que Railway genere el certificado SSL
 - Verifica que el proxy de Cloudflare esté **ON** (naranja)
 
 ### ❌ CORS Error desde el Client
 
 **Solución:**
+
 ```bash
 # Verifica la variable CORS_ORIGIN en Railway
 CORS_ORIGIN=https://app.growfyt.com
@@ -152,10 +157,10 @@ CORS_ORIGIN=https://app.growfyt.com
 
 ### Dominios configurados:
 
-| Dominio | Servicio | Plataforma | Estado |
-|---------|----------|------------|--------|
-| `app.growfyt.com` | Client | Vercel | ✅ |
-| `api.growfyt.com` | API | Railway | ⏳ Pendiente |
+| Dominio           | Servicio | Plataforma | Estado       |
+| ----------------- | -------- | ---------- | ------------ |
+| `app.growfyt.com` | Client   | Vercel     | ✅           |
+| `api.growfyt.com` | API      | Railway    | ⏳ Pendiente |
 
 ---
 
@@ -177,6 +182,7 @@ CORS_ORIGIN=https://app.growfyt.com
 ## 📸 Capturas de Referencia
 
 ### Railway - Custom Domain:
+
 ```
 Settings → Networking → Custom Domain
 ┌─────────────────────────────────────────┐
@@ -191,6 +197,7 @@ Settings → Networking → Custom Domain
 ```
 
 ### Cloudflare - DNS Record:
+
 ```
 Type    Name    Content                                 Proxy  TTL
 CNAME   api     growfit-api-production.up.railway.app   ☁️     Auto

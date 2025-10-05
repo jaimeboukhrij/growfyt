@@ -1,0 +1,17 @@
+[phases.setup]
+nixPkgs = ['nodejs_20', 'pnpm']
+
+[phases.install]
+cmds = [
+  'cd ../.. && pnpm install --frozen-lockfile'
+]
+
+[phases.build]
+cmds = [
+  'cd ../.. && pnpm --filter growfit-shared build',
+  'cd ../.. && pnpm --filter growfit-api build',
+  'pnpm prisma:generate'
+]
+
+[start]
+cmd = 'pnpm prisma:migrate deploy && node dist/apps/api/src/main.js'

@@ -6,7 +6,8 @@
 Error: Cannot find module '/app/apps/api/node_modules/growfit-shared/dist/index.js'
 ```
 
-**Causa:** 
+**Causa:**
+
 - Ejecutar `node` desde `/app/apps/api/` hace que Node busque los módulos en `/app/apps/api/node_modules/`
 - En un monorepo con pnpm, `growfit-shared` está en `/app/node_modules/` (raíz del monorepo)
 
@@ -17,12 +18,14 @@ Error: Cannot find module '/app/apps/api/node_modules/growfit-shared/dist/index.
 ### Cambio en `nixpacks.toml`:
 
 **ANTES (❌ Incorrecto):**
+
 ```toml
 [start]
 cmd = 'cd apps/api && pnpm prisma:migrate deploy && pnpm start:prod'
 ```
 
 **AHORA (✅ Correcto):**
+
 ```toml
 [start]
 cmd = 'cd apps/api && pnpm prisma:migrate deploy && cd ../.. && NODE_ENV=production node apps/api/dist/apps/api/src/main.js'
@@ -101,6 +104,7 @@ NODE_ENV=production node apps/api/dist/apps/api/src/main.js
 Después de este fix, Railway debería:
 
 1. ✅ **Build exitoso:**
+
    ```bash
    pnpm --filter growfit-shared build
    pnpm --filter growfit-api build
@@ -108,10 +112,11 @@ Después de este fix, Railway debería:
    ```
 
 2. ✅ **Start exitoso:**
+
    ```bash
    cd apps/api && pnpm prisma:migrate deploy
    # Migrations aplicadas
-   
+
    cd ../..
    NODE_ENV=production node apps/api/dist/apps/api/src/main.js
    # Servidor iniciando...
@@ -171,6 +176,7 @@ curl https://api.growfyt.com/api/health
 ### Error: "Cannot find module '@nestjs/...'"
 
 **Solución:** Reinstalar dependencias en Railway
+
 ```bash
 # Forzar rebuild en Railway:
 # Settings → Redeploy (o hacer un commit vacío)
@@ -181,6 +187,7 @@ git push origin main
 ### Error: "Prisma Client not generated"
 
 **Solución:** Verificar fase de build
+
 ```bash
 # Debe ejecutarse en nixpacks.toml:
 cd apps/api && pnpm prisma:generate
@@ -189,6 +196,7 @@ cd apps/api && pnpm prisma:generate
 ### Error: "Database connection failed"
 
 **Solución:** Verificar `DATABASE_URL`
+
 - Railway → Variables → `DATABASE_URL` debe estar configurada
 - Formato: `postgresql://user:password@host:port/database`
 
@@ -225,6 +233,7 @@ cd apps/api && pnpm prisma:generate
 ## 🆘 Si Necesitas Ayuda
 
 Comparte:
+
 1. Screenshot del estado del deployment en Railway
 2. Los últimos 50 líneas de los logs (especialmente la sección "Start")
 3. Variables de entorno configuradas (oculta passwords)
