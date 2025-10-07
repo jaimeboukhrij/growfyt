@@ -16,8 +16,6 @@ interface Props {
 export function CollapsibleMenuItem ({ item, pathname, mounted }: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
-  console.log({ item })
-
   const isSubmenuActive = item.subItems?.some(subItem =>
     subItem.href && mounted && pathname === subItem.href
   )

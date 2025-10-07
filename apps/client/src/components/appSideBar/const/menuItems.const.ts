@@ -44,9 +44,9 @@ export const menuItems: MenuItem[] = [
         href: '/routines/new'
       },
       {
-        title: 'Plantillas',
-        icon: BookOpen,
-        href: '/routines/templates'
+        title: 'Ejercicios',
+        icon: Activity,
+        href: '/training/exercises'
       }
     ]
   },
