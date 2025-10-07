@@ -23,6 +23,6 @@
       "growfit-shared": ["../../packages/shared/src/index.ts"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "scripts/**/*", "prisma/**/*"],
   "exclude": ["node_modules", "dist"]
 }

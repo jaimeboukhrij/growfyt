@@ -1,16 +1,7 @@
-// Tipos compartidos
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
-}
+// API Types
+export * from './models/api'
 
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
+// Training Types
+export * from './models/training'
 
-// Constantes compartidas
-export const APP_NAME = 'Growfit';
+

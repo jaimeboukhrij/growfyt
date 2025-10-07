@@ -10,12 +10,70 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum BodyPart {
+    BACK      @map("espalda")
+    CHEST     @map("pecho")
+    LEGS      @map("piernas")
+    ARMS      @map("brazos")
+    SHOULDERS @map("hombros")
+    CORE      @map("core")
+    GLUTES    @map("glúteos")
+}
+
+enum Equipment {
+    BARBELL         @map("barra")
+    DUMBBELL        @map("mancuerna")
+    CABLE           @map("cable")
+    BODYWEIGHT      @map("peso corporal")
+    LEVER_MACHINE   @map("máquina de palanca")
+    KETTLEBELL      @map("kettlebell")
+    RESISTANCE_BAND @map("banda elástica")
+    NO_EQUIPMENT    @map("sin equipamiento")
+}
+
+enum Difficulty {
+    BEGINNER     @map("principiante")
+    INTERMEDIATE @map("intermedio")
+    ADVANCED     @map("avanzado")
+}
+
+enum Category {
+    STRENGTH    @map("fuerza")
+    CARDIO      @map("cardio")
+    FLEXIBILITY @map("flexibilidad")
+    STRETCHING  @map("estiramiento")
+}
+
+enum TargetMuscle {
+    UPPER_BACK @map("parte superior de la espalda")
+    LATS       @map("dorsales")
+    TRAPS      @map("trapecios")
+    SPINE      @map("columna vertebral")
+    RHOMBOIDS  @map("romboides")
+    REAR_DELTS @map("deltoides traseros")
+}
+
 model User {
     id        String   @id @default(uuid())
     name      String
     email     String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
 
-    @@map("users")
+model Exercise {
+    id               String       @id @default(uuid())
+    bodyPart         BodyPart
+    equipment        Equipment
+    playbackId       String
+    name             String
+    slug             String       @unique
+    target           TargetMuscle
+    secondaryMuscles String[]
+    difficulty       Difficulty
+    category         Category
+    description      String
+    instructions     String[]
+    createdAt        DateTime     @default(now())
+    updatedAt        DateTime     @updatedAt
 }
