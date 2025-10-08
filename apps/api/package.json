@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "nodemon",
+    "dev:ts-node-dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --poll -r tsconfig-paths/register src/main.ts",
+    "dev:nest": "nest start --watch --preserveWatchOutput",
+    "dev:debug": "nest start --debug --watch --preserveWatchOutput",
     "prebuild": "prisma generate",
     "build": "tsc -p tsconfig.build.json",
     "start": "NODE_ENV=production node dist/apps/api/src/main",
     "start:prod": "NODE_ENV=production node dist/apps/api/src/main",
-    "start:dev": "tsx watch src/main.ts",
+    "start:dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/main.ts",
     "start:debug": "nest start --debug --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "type-check": "tsc --noEmit",
@@ -16,7 +19,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "prisma:seed": "tsx prisma/seed.ts",
+    "seed-exercises": "tsx scripts/seed-back-exercises.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
@@ -34,8 +38,10 @@
     "@nestjs/testing": "^10.4.15",
     "@types/express": "^4.17.21",
     "@types/node": "^20.10.5",
+    "nodemon": "^3.0.1",
     "prisma": "^6.2.1",
-    "ts-node": "^10.9.2",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.6",
     "typescript": "^5.3.3"
