@@ -132,6 +132,7 @@ function SidebarProvider ({
         <div
           data-slot="sidebar-wrapper"
           style={
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             {
               '--sidebar-width': SIDEBAR_WIDTH,
               '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
@@ -189,6 +190,7 @@ function Sidebar ({
           data-mobile="true"
           className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
           style={
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             {
               '--sidebar-width': SIDEBAR_WIDTH_MOBILE
             } as React.CSSProperties
@@ -628,6 +630,7 @@ function SidebarMenuSkeleton ({
         className="h-4 max-w-(--skeleton-width) flex-1"
         data-sidebar="menu-skeleton-text"
         style={
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
           {
             '--skeleton-width': width
           } as React.CSSProperties

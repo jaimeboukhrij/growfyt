@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common'
-import { ApiResponse, Exercise } from 'growfit-shared'
+import { Controller, Get, Query, Param } from '@nestjs/common'
+import { ApiResponse, Exercise, ExercisesQueryParams } from 'growfit-shared'
 
 import { ExerciseService } from './services/exercises.service'
 
@@ -8,7 +8,12 @@ export class TrainingController {
   constructor (private readonly exerciseService: ExerciseService) {}
 
   @Get('exercises')
-  async findAllExercises (): Promise<ApiResponse<Exercise[]>> {
-    return await this.exerciseService.findAll()
+  async findAllExercises (@Query() queryParams: ExercisesQueryParams): Promise<ApiResponse<Exercise[]>> {
+    return await this.exerciseService.findAll(queryParams)
+  }
+
+  @Get('exercises/:id')
+  async findOneExercise (@Param('id') id: string): Promise<ApiResponse<Exercise>> {
+    return await this.exerciseService.findOne(id)
   }
 }

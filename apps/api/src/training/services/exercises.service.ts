@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Exercise, ApiResponse } from 'growfit-shared'
+import { Prisma, TargetMuscle } from '@prisma/client'
+import { Exercise, ApiResponse, ExercisesQueryParams } from 'growfit-shared'
 
 import { PrismaService } from 'src/prisma/prisma.service'
 
@@ -11,10 +12,25 @@ export class ExerciseService {
     private readonly prismaService: PrismaService
   ) {}
 
-  async findAll (): Promise<ApiResponse<Exercise[]>> {
+  async findAll (queryParams: ExercisesQueryParams = {}): Promise<ApiResponse<Exercise[]>> {
+    const { q, targetMuscle } = queryParams
     try {
-      const exercises = await this.prismaService.exercise.findMany({})
-      console.log('Exercises from DB:', exercises[0])
+      const whereClause: Prisma.ExerciseWhereInput = {}
+
+      if (targetMuscle) {
+        whereClause.target = targetMuscle as unknown as TargetMuscle
+      }
+
+      if (q) {
+        whereClause.OR = [
+          { name: { contains: q, mode: 'insensitive' } },
+          { description: { contains: q, mode: 'insensitive' } }
+        ]
+      }
+
+      const exercises = await this.prismaService.exercise.findMany({
+        where: whereClause
+      })
 
       const data: Exercise[] = exercises.map(exercise => ({
         ...exercise,
@@ -25,7 +41,44 @@ export class ExerciseService {
         category: mapCategory(exercise.category)
       }))
 
-      console.log('Processed data:', data[0])
+      return {
+        code: 200,
+        success: true,
+        data
+      }
+    } catch (error) {
+      console.log(error)
+      return {
+        code: 500,
+        success: false,
+        error: 'Internal Server Error'
+      }
+    }
+  }
+
+  async findOne (id: string): Promise<ApiResponse<Exercise>> {
+    try {
+      const exercise = await this.prismaService.exercise.findUnique({
+        where: { id }
+      })
+
+      if (!exercise) {
+        return {
+          code: 404,
+          success: false,
+          error: 'Exercise not found'
+        }
+      }
+
+      const data: Exercise = {
+        ...exercise,
+        bodyPart: mapBodyPart(exercise.bodyPart),
+        equipment: mapEquipment(exercise.equipment),
+        target: mapTargetMuscle(exercise.target),
+        difficulty: mapDifficulty(exercise.difficulty),
+        category: mapCategory(exercise.category)
+      }
+
       return {
         code: 200,
         success: true,

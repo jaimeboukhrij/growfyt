@@ -17,10 +17,13 @@ export const GridExercises = ({ exercises }: Props) => {
     )
   }
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full overflow-hidden">
       {exercises.map((exercise) => (
-        <Link key={exercise.id} href={`/exercises/${exercise.id}`}>
-          <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer h-full">
+        <Link
+          key={exercise.id}
+          href={`/training/exercises/${exercise.id}`} className=" min-w-0"
+        >
+          <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer h-full w-full">
             <div
               className="aspect-video bg-muted relative overflow-hidden"
               style={{

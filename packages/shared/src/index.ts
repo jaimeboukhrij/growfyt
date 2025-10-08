@@ -1,7 +1,3 @@
-// API Types
-export * from './models/api'
+export * from './models'
 
-// Training Types
-export * from './models/training'
-
-
+export * from './schemas'

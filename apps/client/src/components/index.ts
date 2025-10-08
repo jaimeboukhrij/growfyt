@@ -1,3 +1,2 @@
-export * from './appSideBar/AppSidebar';
-export * from './appTopMenu/AppTopMenu';
-
+export * from './appSideBar/AppSidebar'
+export * from './appTopMenu/AppTopMenu'

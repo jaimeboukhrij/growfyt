@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Dumbbell, Library, TrendingUp, Award, UserPlus, Calendar, BookOpen, Target, BarChart3, Activity } from 'lucide-react'
+import { LayoutDashboard, Users, Dumbbell, Library, TrendingUp, Award, UserPlus, Calendar, Target, BarChart3, Activity } from 'lucide-react'
 
 import { type MenuItem } from '../models/menuItem.interface'
 
