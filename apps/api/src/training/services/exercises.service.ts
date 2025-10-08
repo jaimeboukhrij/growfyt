@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Prisma, TargetMuscle } from '@prisma/client'
 import { Exercise, ApiResponse, ExercisesQueryParams } from 'growfit-shared'
 
-import { PrismaService } from 'src/prisma/prisma.service'
-
+import { PrismaService } from '../../prisma/prisma.service'
 import { mapBodyPart, mapCategory, mapDifficulty, mapEquipment, mapTargetMuscle } from '../mappers/exercises.mapper'
 
 @Injectable()
