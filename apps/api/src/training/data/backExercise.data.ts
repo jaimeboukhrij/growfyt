@@ -1,4 +1,6 @@
-export const backExerciseData = [
+import { normalizeExerciseData } from '../utils/normalize-data'
+
+const rawBackExerciseData = [
   {
     bodyPart: 'espalda',
     equipment: 'barra',
@@ -350,3 +352,5 @@ export const backExerciseData = [
     ]
   }
 ]
+
+export const backExerciseData = normalizeExerciseData(rawBackExerciseData)
