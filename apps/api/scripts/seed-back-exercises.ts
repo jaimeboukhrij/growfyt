@@ -66,21 +66,23 @@ function getBodyPartEnum (value: string): BodyPart {
 
 async function seedBackExercises () {
   try {
-    console.log('🌱 Iniciando inserción de ejercicios de espalda...')
+    console.log('🌱 Iniciando proceso de seed de ejercicios de espalda...')
 
-    // Contar ejercicios existentes
-    const existingCount = await prisma.exercise.count({
+    // Borrar ejercicios de espalda existentes
+    console.log('🗑️  Eliminando ejercicios de espalda existentes...')
+    const deleteResult = await prisma.exercise.deleteMany({
       where: {
         bodyPart: BodyPart.BACK
       }
     })
-
-    console.log(`📊 Ejercicios de espalda existentes: ${existingCount}`)
+    console.log(`✅ Eliminados ${deleteResult.count} ejercicios de espalda`)
 
     // Insertar ejercicios uno por uno para manejar duplicados
     let insertedCount = 0
     let skippedCount = 0
     let errorCount = 0
+
+    console.log('\n📝 Insertando nuevos ejercicios...')
 
     for (const exerciseData of backExerciseData) {
       try {
