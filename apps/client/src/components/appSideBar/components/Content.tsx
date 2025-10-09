@@ -1,8 +1,6 @@
 'use client'
 
-import { Settings } from 'lucide-react'
-
-import { SidebarMenuItem, SidebarMenuButton, SidebarContent } from '@/components/ui/sidebar'
+import { SidebarContent } from '@/components/ui/sidebar'
 
 import { menuItems } from '../const/menuItems.const'
 
@@ -17,7 +15,7 @@ export const Content = () => {
           <MenuItem key={item.href ?? item.title} item={item} />
         ))}
       </Group>
-      <Group title='Ajustes'>
+      {/* <Group title='Ajustes'>
         <SidebarMenuItem>
           <SidebarMenuButton asChild tooltip="Ajustes">
             <button>
@@ -26,7 +24,7 @@ export const Content = () => {
             </button>
           </SidebarMenuButton>
         </SidebarMenuItem>
-      </Group>
+      </Group> */}
     </SidebarContent>
   )
 }

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Dumbbell, Library, TrendingUp, Award, UserPlus, Target, BarChart3, Activity } from 'lucide-react'
+import { LayoutDashboard, Dumbbell, Library } from 'lucide-react'
 
 import { type MenuItem } from '../models/menuItem.interface'
 
@@ -8,59 +8,18 @@ export const menuItems: MenuItem[] = [
     icon: LayoutDashboard,
     href: '/'
   },
+
   {
-    title: 'Clientes',
-    icon: Users,
-    subItems: [
-      {
-        title: 'Todos los Clientes',
-        icon: Users,
-        href: '/clients'
-      },
-      {
-        title: 'Nuevo Cliente',
-        icon: UserPlus,
-        href: '/clients/new'
-      },
-      {
-        title: 'Ejercicios',
-        icon: Activity,
-        href: '/clients/exercise'
-      }
-    ]
-  },
-  {
-    title: 'Rutinas',
+    title: 'Entrenamientos',
     icon: Dumbbell,
     subItems: [
       {
-        title: 'Todas las Rutinas',
+        title: 'Todas los ejercicios',
         icon: Library,
         href: '/training/exercises'
       }
 
     ]
-  },
-
-  {
-    title: 'Progreso',
-    icon: TrendingUp,
-    subItems: [
-      {
-        title: 'Métricas Generales',
-        icon: BarChart3,
-        href: '/progress'
-      },
-      {
-        title: 'Objetivos',
-        icon: Target,
-        href: '/progress/goals'
-      }
-    ]
-  },
-  {
-    title: 'Marca Personal',
-    icon: Award,
-    href: '/brand'
   }
+
 ]
