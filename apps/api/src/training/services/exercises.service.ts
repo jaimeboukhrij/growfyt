@@ -48,6 +48,7 @@ export class ExerciseService {
       }
     } catch (error) {
       console.log(error)
+
       return {
         code: 500,
         success: false,
