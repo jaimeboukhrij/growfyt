@@ -12,9 +12,9 @@ import { AddExercise } from './AddExercise'
 export const ByMuscle = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const currentMuscle = searchParams.get('muscle') ?? 'all'
+  const bodyPart = searchParams.get('bodyPart') ?? 'all'
 
-  const handleMuscleChange = (value: string) => {
+  const handleBodyPartChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString())
     if (value === 'all') {
       params.delete('bodyPart')
@@ -27,7 +27,7 @@ export const ByMuscle = () => {
 
   return (
     <section className='flex gap-4 items-center'>
-      <Select value={currentMuscle} onValueChange={handleMuscleChange}>
+      <Select value={bodyPart} onValueChange={handleBodyPartChange}>
         <SelectTrigger className="w-[180px] cursor-pointer">
           <Filter className="mr-2 h-4 w-4" />
           <SelectValue placeholder="Parte del cuerpo" />

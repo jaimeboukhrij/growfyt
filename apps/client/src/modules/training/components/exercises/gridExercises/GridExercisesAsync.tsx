@@ -14,14 +14,16 @@ export default function GridExercisesAsync () {
   const searchString = searchParams.toString()
   const [exercises, setExercises] = useState<Exercise[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [showSkeleton, setShowSkeleton] = useState(false)
 
   const requestParams = useMemo(() => {
     const params = new URLSearchParams(searchString)
     const q = params.get('q') ?? undefined
     const bodyPart = params.get('bodyPart') as BodyParts ?? undefined
+    setShowSkeleton(!q && !bodyPart)
 
     return { q, bodyPart }
-  }, [searchString])
+  }, [searchString, setShowSkeleton])
 
   useEffect(() => {
     const fetchExercises = async () => {
@@ -39,7 +41,7 @@ export default function GridExercisesAsync () {
     void fetchExercises()
   }, [requestParams])
 
-  if (isLoading) {
+  if (showSkeleton && isLoading) {
     return <GridExercisesSkeleton />
   }
 
