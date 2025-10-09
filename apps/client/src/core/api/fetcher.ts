@@ -16,7 +16,8 @@ export async function fetcher<Response = unknown, Body = unknown> (
 ): Promise<Response> {
   const { method = 'GET', body, headers = {}, baseUrlOverride } = options
 
-  const baseUrl = baseUrlOverride ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3001/api'
+  const baseUrl = baseUrlOverride ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localho'
+  console.log({ baseUrl })
 
   const url = endpoint.startsWith('http')
     ? endpoint

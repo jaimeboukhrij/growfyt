@@ -5,8 +5,9 @@ import { buildQueryParams } from '@/core/utils/buildQuery'
 
 export const findAllExercise = async (query?: ExercisesQueryParams): Promise<Exercise[]> => {
   const searchParams = buildQueryParams<ExercisesQueryParams>(query)
-  console.log({ searchParams })
-  const response = await fetcher<ApiResponse<Exercise[]>>(`/training/exercises?${searchParams}`)
+  const response = await fetcher<ApiResponse<Exercise[]>>(`/training/exercises?${searchParams}`, {
+    revalidate: 300
+  })
 
   if (!response.success) {
     throw new Error(response.error)
