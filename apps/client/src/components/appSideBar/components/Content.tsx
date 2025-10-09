@@ -1,7 +1,6 @@
 'use client'
 
 import { Settings } from 'lucide-react'
-import Link from 'next/link'
 
 import { SidebarMenuItem, SidebarMenuButton, SidebarContent } from '@/components/ui/sidebar'
 
@@ -21,10 +20,10 @@ export const Content = () => {
       <Group title='Ajustes'>
         <SidebarMenuItem>
           <SidebarMenuButton asChild tooltip="Ajustes">
-            <Link href="/settings">
+            <button>
               <Settings className="h-4 w-4" />
               <span>Ajustes</span>
-            </Link>
+            </button>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </Group>

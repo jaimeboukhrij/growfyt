@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Dumbbell, Library, TrendingUp, Award, UserPlus, Calendar, Target, BarChart3, Activity } from 'lucide-react'
+import { LayoutDashboard, Users, Dumbbell, Library, TrendingUp, Award, UserPlus, Target, BarChart3, Activity } from 'lucide-react'
 
 import { type MenuItem } from '../models/menuItem.interface'
 
@@ -36,25 +36,12 @@ export const menuItems: MenuItem[] = [
       {
         title: 'Todas las Rutinas',
         icon: Library,
-        href: '/routines'
-      },
-      {
-        title: 'Crear Rutina',
-        icon: Calendar,
-        href: '/routines/new'
-      },
-      {
-        title: 'Ejercicios',
-        icon: Activity,
         href: '/training/exercises'
       }
+
     ]
   },
-  {
-    title: 'Ejercicios',
-    icon: Library,
-    href: '/exercises'
-  },
+
   {
     title: 'Progreso',
     icon: TrendingUp,
