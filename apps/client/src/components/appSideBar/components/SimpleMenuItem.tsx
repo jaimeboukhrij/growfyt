@@ -1,6 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 
-import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
+import { SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
 
 import { type MenuItem } from '../models/menuItem.interface'
 
@@ -11,7 +13,15 @@ interface Props {
 }
 
 export function SimpleMenuItem ({ item, pathname, mounted }: Props) {
+  const { isMobile, setOpenMobile } = useSidebar()
   const isActive = mounted && pathname === item.href
+
+  const handleClick = () => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }
+
   return (
     <SidebarMenuItem className='cursor-pointer'>
       <SidebarMenuButton
@@ -24,7 +34,7 @@ export function SimpleMenuItem ({ item, pathname, mounted }: Props) {
             : ''
         }`}
       >
-        <Link href={item.href ?? '#'}>
+        <Link href={item.href ?? '#'} onClick={handleClick}>
           <item.icon className={`h-4 w-4 ${isActive ? '!text-emerald-700' : ''}`} />
           <span>{item.title}</span>
         </Link>

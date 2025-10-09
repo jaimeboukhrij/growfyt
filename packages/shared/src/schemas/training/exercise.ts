@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { TargetMuscles } from '../../models/training'
+import { BodyParts } from '../../models/training'
 
 export const ExercisesQueryParamsSchema = z.object({
-  targetMuscle: z.enum(TargetMuscles).optional(),
+  bodyPart: z.enum(BodyParts).optional(),
   q: z.string().optional()
 })
