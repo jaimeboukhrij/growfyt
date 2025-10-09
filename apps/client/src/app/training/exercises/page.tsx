@@ -1,4 +1,5 @@
 import { type TargetMuscles } from 'growfit-shared'
+import { Suspense } from 'react'
 
 import { Filters, findAllExercise } from '@/modules/training'
 import { GridExercises } from '@/modules/training/components/exercises/gridExercises/GridExercises'
@@ -13,7 +14,11 @@ export default async function ExercisePage ({ searchParams }: Props) {
   return (
     <section className='px-4 py-8 flex flex-col gap-8'>
       <Filters />
-      <GridExercises exercises={exercise} />
+      <Suspense fallback={
+        <div>Cargando ejercicios...</div>}
+      >
+        <GridExercises exercises={exercise} />
+      </Suspense>
     </section>
   )
 }
