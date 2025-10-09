@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Prisma, TargetMuscle } from '@prisma/client'
+import { BodyPart, Prisma } from '@prisma/client'
 import { Exercise, ApiResponse, ExercisesQueryParams } from 'growfit-shared'
 
 import { PrismaService } from '../../prisma/prisma.service'
@@ -12,12 +12,13 @@ export class ExerciseService {
   ) {}
 
   async findAll (queryParams: ExercisesQueryParams = {}): Promise<ApiResponse<Exercise[]>> {
-    const { q, targetMuscle } = queryParams
+    console.log('debtrooooo del back')
+    const { q, bodyPart } = queryParams
     try {
       const whereClause: Prisma.ExerciseWhereInput = {}
 
-      if (targetMuscle) {
-        whereClause.target = targetMuscle as unknown as TargetMuscle
+      if (bodyPart) {
+        whereClause.bodyPart = bodyPart as unknown as BodyPart
       }
 
       if (q) {

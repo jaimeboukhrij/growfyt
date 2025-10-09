@@ -1,9 +1,11 @@
+'use client'
+
 import * as Collapsible from '@radix-ui/react-collapsible'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
-import { SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar'
+import { SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, useSidebar } from '@/components/ui/sidebar'
 
 import { type MenuItem } from '../models/menuItem.interface'
 
@@ -15,6 +17,7 @@ interface Props {
 
 export function CollapsibleMenuItem ({ item, pathname, mounted }: Props) {
   const [isOpen, setIsOpen] = useState(false)
+  const { isMobile, setOpenMobile } = useSidebar()
 
   const isSubmenuActive = item.subItems?.some(subItem =>
     subItem.href && mounted && pathname === subItem.href
@@ -25,6 +28,12 @@ export function CollapsibleMenuItem ({ item, pathname, mounted }: Props) {
       setIsOpen(true)
     }
   }, [mounted, isSubmenuActive])
+
+  const handleSubItemClick = () => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }
 
   return (
     <Collapsible.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -66,7 +75,7 @@ export function CollapsibleMenuItem ({ item, pathname, mounted }: Props) {
                       : 'text-gray-600'
                   }`}
                 >
-                  <Link href={subItem.href ?? '#'}>
+                  <Link href={subItem.href ?? '#'} onClick={handleSubItemClick}>
                     <subItem.icon
                       className={`h-3.5 w-3.5 ${
                         mounted && pathname === subItem.href ? '!text-emerald-700' : 'text-gray-500'
