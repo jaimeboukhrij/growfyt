@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "if [ \"$CI\" != \"railway\" ]; then next build --turbopack; else echo '⏭️  Skipping Next.js build on Railway'; fi",
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit",
