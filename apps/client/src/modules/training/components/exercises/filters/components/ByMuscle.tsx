@@ -3,7 +3,6 @@
 import { BodyParts } from 'growfit-shared'
 import { Filter } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React from 'react'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 

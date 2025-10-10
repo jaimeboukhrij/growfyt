@@ -5,10 +5,10 @@ import { SearchExercise } from './components/SearchExercise'
 export const Filters = () => {
   return (
     <section className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      <section className="flex flex-col gap-6 lg:flex-row flex-1 lg:gap-2">
+      <div className="flex flex-col gap-6 lg:flex-row flex-1 lg:gap-2">
         <SearchExercise />
         <ByMuscle />
-      </section>
+      </div>
       <AddExercise className='hidden lg:flex' />
     </section>
   )

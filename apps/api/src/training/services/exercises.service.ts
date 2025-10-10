@@ -12,8 +12,7 @@ export class ExerciseService {
   ) {}
 
   async findAll (queryParams: ExercisesQueryParams = {}): Promise<ApiResponse<Exercise[]>> {
-    console.log('debtrooooo del back')
-    const { q, bodyPart } = queryParams
+    const { q, bodyPart, limit, offset } = queryParams
     try {
       const whereClause: Prisma.ExerciseWhereInput = {}
 
@@ -29,7 +28,9 @@ export class ExerciseService {
       }
 
       const exercises = await this.prismaService.exercise.findMany({
-        where: whereClause
+        where: whereClause,
+        take: Number(limit),
+        skip: Number(offset)
       })
 
       const data: Exercise[] = exercises.map(exercise => ({
