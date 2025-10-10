@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 
+import { CloudFlareModule } from './cloudflare/cloudflare.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { TrainingModule } from './training/training.module'
 import { UsersModule } from './users/users.module'
@@ -12,7 +13,8 @@ import { UsersModule } from './users/users.module'
     }),
     PrismaModule,
     UsersModule,
-    TrainingModule
+    TrainingModule,
+    CloudFlareModule
   ],
   controllers: [],
   providers: []

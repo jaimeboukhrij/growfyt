@@ -17,7 +17,7 @@ enum BodyPart {
     ARMS      @map("brazos")
     SHOULDERS @map("hombros")
     CORE      @map("core")
-    GLUTES    @map("glúteos")
+    GLUTES    @map("gluteos")
 }
 
 enum Equipment {
@@ -25,9 +25,9 @@ enum Equipment {
     DUMBBELL        @map("mancuerna")
     CABLE           @map("cable")
     BODYWEIGHT      @map("peso corporal")
-    LEVER_MACHINE   @map("máquina de palanca")
+    LEVER_MACHINE   @map("maquina de palanca")
     KETTLEBELL      @map("kettlebell")
-    RESISTANCE_BAND @map("banda elástica")
+    RESISTANCE_BAND @map("banda elastica")
     NO_EQUIPMENT    @map("sin equipamiento")
 }
 
@@ -44,13 +44,21 @@ enum Category {
     STRETCHING  @map("estiramiento")
 }
 
-enum TargetMuscle {
+enum Muscle {
     UPPER_BACK @map("parte superior de la espalda")
     LATS       @map("dorsales")
     TRAPS      @map("trapecios")
     SPINE      @map("columna vertebral")
     RHOMBOIDS  @map("romboides")
     REAR_DELTS @map("deltoides traseros")
+    BICEPS     @map("biceps")
+    FOREARMS   @map("antebrazo")
+    SHOULDERS  @map("hombros")
+    GLUTES     @map("gluteos")
+    HAMSTRINGS @map("isquiotibiales")
+    CHEST      @map("pecho")
+    TRICEPS    @map("triceps")
+    WAIST      @map("cintura")
 }
 
 model User {
@@ -62,18 +70,18 @@ model User {
 }
 
 model Exercise {
-    id               String       @id @default(uuid())
+    id               String     @id @default(uuid())
     bodyPart         BodyPart
-    equipment        Equipment
-    playbackId       String
-    name             String
-    slug             String       @unique
-    target           TargetMuscle
-    secondaryMuscles String[]
-    difficulty       Difficulty
     category         Category
+    createdAt        DateTime   @default(now())
     description      String
+    difficulty       Difficulty
+    equipment        Equipment
     instructions     String[]
-    createdAt        DateTime     @default(now())
-    updatedAt        DateTime     @updatedAt
+    name             String
+    playbackId       String
+    primaryMuscle    Muscle
+    secondaryMuscles Muscle[]
+    slug             String     @unique
+    updatedAt        DateTime   @updatedAt
 }

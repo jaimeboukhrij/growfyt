@@ -1,8 +1,10 @@
 import { z } from 'zod'
 
-import { BodyParts } from '../../models/training'
+import { BodyPart } from '../../models/training'
 
 export const ExercisesQueryParamsSchema = z.object({
-  bodyPart: z.enum(BodyParts).optional(),
-  q: z.string().optional()
+  bodyPart: z.enum(BodyPart).optional(),
+  q: z.string().optional(),
+  limit: z.coerce.number().int().min(1).optional(),
+  offset: z.coerce.number().int().min(0).optional()
 })
