@@ -9,7 +9,7 @@
     "build": {
       "dependsOn": ["^build", "prisma:generate"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "env": ["CI"]
+      "env": ["DEPLOY_ENV"]
     },
     "dev": {
       "cache": false,

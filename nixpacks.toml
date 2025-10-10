@@ -2,20 +2,13 @@
 nixPkgs = ['nodejs_20', 'pnpm']
 
 [phases.install]
-cmds = [
-  'pnpm install --frozen-lockfile'
-]
+cmds = ['pnpm install --frozen-lockfile']
 
 [phases.build]
 cmds = [
-  # 🧩 Build solo los paquetes que necesita el backend
   'pnpm --filter growfit-shared build --no-deps',
   'pnpm --filter growfit-api build --no-deps',
-  
-  # 🧠 Genera el cliente de Prisma
   'cd apps/api && pnpm prisma:generate',
-  
-  # 📦 Copia el shared ya compilado dentro del node_modules del backend
   'mkdir -p apps/api/node_modules/growfit-shared',
   'cp -r packages/shared/dist apps/api/node_modules/growfit-shared/',
   'cp packages/shared/package.json apps/api/node_modules/growfit-shared/'
