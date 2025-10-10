@@ -1,67 +1,79 @@
-import { PrismaClient, BodyPart, Equipment, Difficulty, Category, TargetMuscle } from '@prisma/client'
-import { BodyParts, Equipment as SharedEquipment, ExerciseDifficultyValues, CategoryValues, TargetMuscles } from 'growfit-shared'
+import { PrismaClient, BodyPart as PrismaBodyPart, Equipment as PrismaEquipment, Muscle as PrismaMuscle, Difficulty as PrismaDifficulty, Category as PrismaCategory } from '@prisma/client'
+import { Difficulty, Muscle, Equipment, Category, BodyPart } from 'growfit-shared'
 
 import { backExerciseData } from '../src/training/data/backExercise.data'
 
 const prisma = new PrismaClient()
 
 // Mapeo de enums del shared package a enums de Prisma
-function getEquipmentEnum (value: string): Equipment {
-  const mapping: Record<string, Equipment> = {
-    [SharedEquipment.BARBELL]: Equipment.BARBELL,
-    [SharedEquipment.DUMBBELL]: Equipment.DUMBBELL,
-    [SharedEquipment.CABLE]: Equipment.CABLE,
-    [SharedEquipment.BODYWEIGHT]: Equipment.BODYWEIGHT,
-    [SharedEquipment.LEVER_MACHINE]: Equipment.LEVER_MACHINE,
-    [SharedEquipment.KETTLEBELL]: Equipment.KETTLEBELL,
-    [SharedEquipment.RESISTANCE_BAND]: Equipment.RESISTANCE_BAND,
-    [SharedEquipment.NO_EQUIPMENT]: Equipment.NO_EQUIPMENT
+function getEquipmentEnum (value: string): PrismaEquipment {
+  const mapping: Record<string, PrismaEquipment> = {
+    [Equipment.BARBELL]: PrismaEquipment.BARBELL,
+    [Equipment.DUMBBELL]: PrismaEquipment.DUMBBELL,
+    [Equipment.CABLE]: PrismaEquipment.CABLE,
+    [Equipment.BODYWEIGHT]: PrismaEquipment.BODYWEIGHT,
+    [Equipment.LEVER_MACHINE]: PrismaEquipment.LEVER_MACHINE,
+    [Equipment.KETTLEBELL]: PrismaEquipment.KETTLEBELL,
+    [Equipment.RESISTANCE_BAND]: PrismaEquipment.RESISTANCE_BAND,
+    [Equipment.NO_EQUIPMENT]: PrismaEquipment.NO_EQUIPMENT
   }
-  return mapping[value] || Equipment.NO_EQUIPMENT
+  return mapping[value] || PrismaEquipment.NO_EQUIPMENT
 }
 
-function getTargetEnum (value: string): TargetMuscle {
-  const mapping: Record<string, TargetMuscle> = {
-    [TargetMuscles.UPPER_BACK]: TargetMuscle.UPPER_BACK,
-    [TargetMuscles.LATS]: TargetMuscle.LATS,
-    [TargetMuscles.TRAPS]: TargetMuscle.TRAPS,
-    [TargetMuscles.SPINE]: TargetMuscle.SPINE,
-    [TargetMuscles.RHOMBOIDS]: TargetMuscle.RHOMBOIDS,
-    [TargetMuscles.REAR_DELTS]: TargetMuscle.REAR_DELTS
+function getMuscleEnum (value: string): PrismaMuscle {
+  const mapping: Record<string, PrismaMuscle> = {
+    [Muscle.UPPER_BACK]: PrismaMuscle.UPPER_BACK,
+    [Muscle.LATS]: PrismaMuscle.LATS,
+    [Muscle.TRAPS]: PrismaMuscle.TRAPS,
+    [Muscle.SPINE]: PrismaMuscle.SPINE,
+    [Muscle.RHOMBOIDS]: PrismaMuscle.RHOMBOIDS,
+    [Muscle.REAR_DELTS]: PrismaMuscle.REAR_DELTS,
+    [Muscle.BICEPS]: PrismaMuscle.BICEPS,
+    [Muscle.FOREARMS]: PrismaMuscle.FOREARMS,
+    [Muscle.SHOULDERS]: PrismaMuscle.SHOULDERS,
+    [Muscle.GLUTES]: PrismaMuscle.GLUTES,
+    [Muscle.HAMSTRINGS]: PrismaMuscle.HAMSTRINGS,
+    [Muscle.CHEST]: PrismaMuscle.CHEST,
+    [Muscle.TRICEPS]: PrismaMuscle.TRICEPS,
+    [Muscle.WAIST]: PrismaMuscle.WAIST
   }
-  return mapping[value] || TargetMuscle.UPPER_BACK
+  return mapping[value] || PrismaMuscle.UPPER_BACK
 }
 
-function getDifficultyEnum (value: string): Difficulty {
-  const mapping: Record<string, Difficulty> = {
-    [ExerciseDifficultyValues.BEGINNER]: Difficulty.BEGINNER,
-    [ExerciseDifficultyValues.INTERMEDIATE]: Difficulty.INTERMEDIATE,
-    [ExerciseDifficultyValues.ADVANCED]: Difficulty.ADVANCED
+function getDifficultyEnum (value: string): PrismaDifficulty {
+  const mapping: Record<string, PrismaDifficulty> = {
+    [Difficulty.BEGINNER]: PrismaDifficulty.BEGINNER,
+    [Difficulty.INTERMEDIATE]: PrismaDifficulty.INTERMEDIATE,
+    [Difficulty.ADVANCED]: PrismaDifficulty.ADVANCED
   }
-  return mapping[value] || Difficulty.BEGINNER
+  return mapping[value] || PrismaDifficulty.BEGINNER
 }
 
-function getCategoryEnum (value: string): Category {
-  const mapping: Record<string, Category> = {
-    [CategoryValues.STRENGTH]: Category.STRENGTH,
-    [CategoryValues.CARDIO]: Category.CARDIO,
-    [CategoryValues.FLEXIBILITY]: Category.FLEXIBILITY,
-    [CategoryValues.STRETCHING]: Category.STRETCHING
+function getCategoryEnum (value: string): PrismaCategory {
+  const mapping: Record<string, PrismaCategory> = {
+    [Category.STRENGTH]: PrismaCategory.STRENGTH,
+    [Category.CARDIO]: PrismaCategory.CARDIO,
+    [Category.FLEXIBILITY]: PrismaCategory.FLEXIBILITY,
+    [Category.STRETCHING]: PrismaCategory.STRETCHING
   }
-  return mapping[value] || Category.STRENGTH
+  return mapping[value] || PrismaCategory.STRENGTH
 }
 
-function getBodyPartEnum (value: string): BodyPart {
-  const mapping: Record<string, BodyPart> = {
-    [BodyParts.BACK]: BodyPart.BACK,
-    [BodyParts.CHEST]: BodyPart.CHEST,
-    [BodyParts.LEGS]: BodyPart.LEGS,
-    [BodyParts.ARMS]: BodyPart.ARMS,
-    [BodyParts.SHOULDERS]: BodyPart.SHOULDERS,
-    [BodyParts.CORE]: BodyPart.CORE,
-    [BodyParts.GLUTES]: BodyPart.GLUTES
+function getBodyPartEnum (value: string): PrismaBodyPart {
+  const mapping: Record<string, PrismaBodyPart> = {
+    [BodyPart.BACK]: PrismaBodyPart.BACK,
+    [BodyPart.CHEST]: PrismaBodyPart.CHEST,
+    [BodyPart.LEGS]: PrismaBodyPart.LEGS,
+    [BodyPart.ARMS]: PrismaBodyPart.ARMS,
+    [BodyPart.SHOULDERS]: PrismaBodyPart.SHOULDERS,
+    [BodyPart.CORE]: PrismaBodyPart.CORE,
+    [BodyPart.GLUTES]: PrismaBodyPart.GLUTES
   }
-  return mapping[value] || BodyPart.BACK
+  return mapping[value] || PrismaBodyPart.BACK
+}
+
+function getSecondaryMusclesEnum (muscles: string[]): PrismaMuscle[] {
+  return muscles.map(muscle => getMuscleEnum(muscle))
 }
 
 async function seedBackExercises () {
@@ -72,7 +84,7 @@ async function seedBackExercises () {
     console.log('🗑️  Eliminando ejercicios de espalda existentes...')
     const deleteResult = await prisma.exercise.deleteMany({
       where: {
-        bodyPart: BodyPart.BACK
+        bodyPart: PrismaBodyPart.BACK
       }
     })
     console.log(`✅ Eliminados ${deleteResult.count} ejercicios de espalda`)
@@ -92,8 +104,8 @@ async function seedBackExercises () {
           playbackId: exerciseData.playbackId,
           name: exerciseData.name,
           slug: exerciseData.slug,
-          target: getTargetEnum(exerciseData.target),
-          secondaryMuscles: exerciseData.secondaryMuscles,
+          primaryMuscle: getMuscleEnum(exerciseData.primarymuscle),
+          secondaryMuscles: getSecondaryMusclesEnum(exerciseData.secondaryMuscles),
           difficulty: getDifficultyEnum(exerciseData.difficulty),
           category: getCategoryEnum(exerciseData.category),
           description: exerciseData.description,
@@ -128,7 +140,7 @@ async function seedBackExercises () {
     // Verificar total de ejercicios después de la inserción
     const finalCount = await prisma.exercise.count({
       where: {
-        bodyPart: BodyPart.BACK
+        bodyPart: PrismaBodyPart.BACK
       }
     })
 
@@ -161,7 +173,7 @@ async function clearBackExercises () {
     console.log('🗑️  Limpiando ejercicios de espalda...')
     const deleteResult = await prisma.exercise.deleteMany({
       where: {
-        bodyPart: BodyPart.BACK
+        bodyPart: PrismaBodyPart.BACK
       }
     })
     console.log(`🗑️  Eliminados ${deleteResult.count} ejercicios de espalda`)

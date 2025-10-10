@@ -1,16 +1,14 @@
-import { ExerciseDifficultyValues } from 'growfit-shared'
+import { Difficulty } from 'growfit-shared'
 
 import { DifficultyColors } from '@/core/models/difficultyColors.enum'
 
-export const getExerciseUrlImg = (playbackId: string) => `https://customer-lvz4yc6kzb02xkz5.cloudflarestream.com/${playbackId}/thumbnails/thumbnail.jpg`
-
 export const getDifficultyColor = (difficulty: string): string => {
   switch (difficulty) {
-    case ExerciseDifficultyValues.BEGINNER:
+    case Difficulty.BEGINNER:
       return DifficultyColors.BEGINNER
-    case ExerciseDifficultyValues.INTERMEDIATE:
+    case Difficulty.INTERMEDIATE:
       return DifficultyColors.INTERMEDIATE
-    case ExerciseDifficultyValues.ADVANCED:
+    case Difficulty.ADVANCED:
       return DifficultyColors.ADVANCED
     default:
       return DifficultyColors.BEGINNER

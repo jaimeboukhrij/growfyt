@@ -1,20 +1,20 @@
-import { BodyPart, Equipment as PrismaEquipment, TargetMuscle, Difficulty, Category } from '@prisma/client'
-import { BodyParts, Equipment, TargetMuscles, ExerciseDifficultyValues, CategoryValues } from 'growfit-shared'
+import { BodyPart as PrismaBodyPart, Equipment as PrismaEquipment, Muscle as PrismaMuscle, Difficulty as PrismaDifficulty, Category as PrismaCategory } from '@prisma/client'
+import { BodyPart, Equipment, Muscle, Difficulty, Category } from 'growfit-shared'
 
-export function mapBodyPart (bodyPart: BodyPart): string {
+export function mapBodyPart (bodyPart: PrismaBodyPart): BodyPart {
   const mapping = {
-    [BodyPart.BACK]: BodyParts.BACK,
-    [BodyPart.CHEST]: BodyParts.CHEST,
-    [BodyPart.LEGS]: BodyParts.LEGS,
-    [BodyPart.ARMS]: BodyParts.ARMS,
-    [BodyPart.SHOULDERS]: BodyParts.SHOULDERS,
-    [BodyPart.CORE]: BodyParts.CORE,
-    [BodyPart.GLUTES]: BodyParts.GLUTES
+    [PrismaBodyPart.BACK]: BodyPart.BACK,
+    [PrismaBodyPart.CHEST]: BodyPart.CHEST,
+    [PrismaBodyPart.LEGS]: BodyPart.LEGS,
+    [PrismaBodyPart.ARMS]: BodyPart.ARMS,
+    [PrismaBodyPart.SHOULDERS]: BodyPart.SHOULDERS,
+    [PrismaBodyPart.CORE]: BodyPart.CORE,
+    [PrismaBodyPart.GLUTES]: BodyPart.GLUTES
   }
   return mapping[bodyPart]
 }
 
-export function mapEquipment (equipment: PrismaEquipment): string {
+export function mapEquipment (equipment: PrismaEquipment): Equipment {
   const mapping = {
     [PrismaEquipment.BARBELL]: Equipment.BARBELL,
     [PrismaEquipment.DUMBBELL]: Equipment.DUMBBELL,
@@ -28,33 +28,41 @@ export function mapEquipment (equipment: PrismaEquipment): string {
   return mapping[equipment]
 }
 
-export function mapTargetMuscle (target: TargetMuscle): string {
+export function mapTargetMuscle (target: PrismaMuscle): Muscle {
   const mapping = {
-    [TargetMuscle.UPPER_BACK]: TargetMuscles.UPPER_BACK,
-    [TargetMuscle.LATS]: TargetMuscles.LATS,
-    [TargetMuscle.TRAPS]: TargetMuscles.TRAPS,
-    [TargetMuscle.SPINE]: TargetMuscles.SPINE,
-    [TargetMuscle.RHOMBOIDS]: TargetMuscles.RHOMBOIDS,
-    [TargetMuscle.REAR_DELTS]: TargetMuscles.REAR_DELTS
+    [PrismaMuscle.UPPER_BACK]: Muscle.UPPER_BACK,
+    [PrismaMuscle.LATS]: Muscle.LATS,
+    [PrismaMuscle.TRAPS]: Muscle.TRAPS,
+    [PrismaMuscle.SPINE]: Muscle.SPINE,
+    [PrismaMuscle.RHOMBOIDS]: Muscle.RHOMBOIDS,
+    [PrismaMuscle.REAR_DELTS]: Muscle.REAR_DELTS,
+    [PrismaMuscle.BICEPS]: Muscle.BICEPS,
+    [PrismaMuscle.FOREARMS]: Muscle.FOREARMS,
+    [PrismaMuscle.SHOULDERS]: Muscle.SHOULDERS,
+    [PrismaMuscle.GLUTES]: Muscle.GLUTES,
+    [PrismaMuscle.HAMSTRINGS]: Muscle.HAMSTRINGS,
+    [PrismaMuscle.CHEST]: Muscle.CHEST,
+    [PrismaMuscle.TRICEPS]: Muscle.TRICEPS,
+    [PrismaMuscle.WAIST]: Muscle.WAIST
   }
   return mapping[target]
 }
 
-export function mapDifficulty (difficulty: Difficulty): string {
+export function mapDifficulty (difficulty: PrismaDifficulty): Difficulty {
   const mapping = {
-    [Difficulty.BEGINNER]: ExerciseDifficultyValues.BEGINNER,
-    [Difficulty.INTERMEDIATE]: ExerciseDifficultyValues.INTERMEDIATE,
-    [Difficulty.ADVANCED]: ExerciseDifficultyValues.ADVANCED
+    [PrismaDifficulty.BEGINNER]: Difficulty.BEGINNER,
+    [PrismaDifficulty.INTERMEDIATE]: Difficulty.INTERMEDIATE,
+    [PrismaDifficulty.ADVANCED]: Difficulty.ADVANCED
   }
   return mapping[difficulty]
 }
 
-export function mapCategory (category: Category): string {
+export function mapCategory (category: PrismaCategory): Category {
   const mapping = {
-    [Category.STRENGTH]: CategoryValues.STRENGTH,
-    [Category.CARDIO]: CategoryValues.CARDIO,
-    [Category.FLEXIBILITY]: CategoryValues.FLEXIBILITY,
-    [Category.STRETCHING]: CategoryValues.STRETCHING
+    [PrismaCategory.STRENGTH]: Category.STRENGTH,
+    [PrismaCategory.CARDIO]: Category.CARDIO,
+    [PrismaCategory.FLEXIBILITY]: Category.FLEXIBILITY,
+    [PrismaCategory.STRETCHING]: Category.STRETCHING
   }
   return mapping[category]
 }

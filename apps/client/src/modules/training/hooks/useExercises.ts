@@ -1,4 +1,4 @@
-import { type BodyParts, type Exercise } from 'growfit-shared'
+import { type BodyPart, type Exercise } from 'growfit-shared'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useState, useCallback } from 'react'
 
@@ -17,7 +17,7 @@ export const useExercises = (initialLimit = 6) => {
   const requestParams = useMemo(() => {
     const params = new URLSearchParams(searchString)
     const q = params.get('q') ?? undefined
-    const bodyPart = params.get('bodyPart') as BodyParts ?? undefined
+    const bodyPart = params.get('bodyPart') as BodyPart ?? undefined
 
     return { q, bodyPart }
   }, [searchString])

@@ -1,6 +1,6 @@
 'use client'
 
-import { BodyParts } from 'growfit-shared'
+import { BodyPart } from 'growfit-shared'
 import { Filter } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -20,7 +20,7 @@ export const ByMuscle = () => {
     } else {
       params.set('bodyPart', value)
     }
-
+    console.log('dentrroo', { params })
     router.push(`?${params.toString()}`, { scroll: false })
   }
 
@@ -33,7 +33,7 @@ export const ByMuscle = () => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem className='cursor-pointer' value="all">Todas</SelectItem>
-          {Object.entries(BodyParts).map(([key, value]) => (
+          {Object.entries(BodyPart).map(([key, value]) => (
             <SelectItem key={key} value={key} className='cursor-pointer'>
               {value.charAt(0).toUpperCase() + value.slice(1)}
             </SelectItem>

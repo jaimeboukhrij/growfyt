@@ -4,23 +4,24 @@ import React from 'react'
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { formatBodyPart, getDifficultyColor, getExerciseUrlImg } from '@/modules/training/utils'
+import { formatBodyPart, getDifficultyColor } from '@/modules/training/utils'
 
 interface Props {
   exercise: ExerciseEnum
 }
 
 export const Exercise = ({ exercise }: Props) => {
+  console.log(exercise)
   return (
     <Link
       key={exercise.id}
-      href={`/training/exercises/${exercise.id}`} className=" min-w-0"
+      href={`/training/exercises/${exercise.slug}`} className=" min-w-0"
     >
       <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer h-full w-full hover:scale-102">
         <div
           className="aspect-video bg-muted relative overflow-hidden"
           style={{
-            backgroundImage: `url(${getExerciseUrlImg(exercise.playbackId)})`,
+            backgroundImage: `url(${exercise.imageUrl})`,
             backgroundSize: 'cover',
             backgroundPosition: '1px',
             backgroundRepeat: 'no-repeat'

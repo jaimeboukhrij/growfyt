@@ -1,39 +1,44 @@
-import { findOneExercise } from '@/modules/training/api/exercise.api'
+import { findAllExercise, findOneExercise } from '@/modules/training/api/exercise.api'
+import { BackButton } from '@/modules/training/components/exerciseDetail/backButton/BackButton'
+import { Header } from '@/modules/training/components/exerciseDetail/header/Header'
+import { Info } from '@/modules/training/components/exerciseDetail/info/Info'
+import { MuscleGroups } from '@/modules/training/components/exerciseDetail/muscleGroups/MuscleGroups'
+import { QuickActions } from '@/modules/training/components/exerciseDetail/quickActions/QuickActions'
 
+export const revalidate = 604800 // 1 week
 interface ExercisePageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
+}
+
+export async function generateStaticParams () {
+  const exercises = await findAllExercise()
+
+  return exercises.map(prod => ({ slug: prod.slug }))
 }
 
 export default async function ExercisePage ({ params }: ExercisePageProps) {
-  try {
-    const exercise = await findOneExercise(params.slug)
+  const { slug } = await params
+  const exercise = await findOneExercise(slug)
 
+  if (!exercise) {
     return (
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-4">{exercise.name}</h1>
-        <p className="text-gray-600 mb-4">{exercise.description}</p>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <strong>Músculo objetivo:</strong> {exercise.target}
-          </div>
-          <div>
-            <strong>Parte del cuerpo:</strong> {exercise.bodyPart}
-          </div>
-          <div>
-            <strong>Equipamiento:</strong> {exercise.equipment}
-          </div>
-          <div>
-            <strong>Dificultad:</strong> {exercise.difficulty}
-          </div>
-        </div>
-      </div>
-    )
-  } catch (error) {
-    return (
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-4">Ejercicio no encontrado</h1>
-        <p>No se pudo cargar la información del ejercicio.</p>
-      </div>
+      <p>no hay ejercicios que mostart</p>
     )
   }
+
+  return (
+    <main className="flex-1 p-6  flex flex-col gap-4">
+      <BackButton />
+      <section className="grid gap-6 lg:grid-cols-3">
+        <Header exercise={exercise} />
+
+        <section className="space-y-6">
+          <MuscleGroups exercise={exercise} />
+          <QuickActions />
+          <Info {...exercise} />
+
+        </section>
+      </section>
+    </main>
+  )
 }

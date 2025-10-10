@@ -1,17 +1,17 @@
-export enum ExerciseDifficultyValues {
+export enum Difficulty {
   BEGINNER = 'principiante',
   INTERMEDIATE = 'intermedio',
   ADVANCED = 'avanzado'
 }
 
-export enum CategoryValues {
+export enum Category {
   STRENGTH = 'fuerza',
   CARDIO = 'cardio',
   FLEXIBILITY = 'flexibilidad',
   STRETCHING = 'estiramiento'
 }
 
-export enum BodyParts {
+export enum BodyPart {
   BACK = 'espalda',
   CHEST = 'pecho',
   LEGS = 'piernas',
@@ -32,11 +32,19 @@ export enum Equipment {
   NO_EQUIPMENT = 'sin equipamiento'
 }
 
-export enum TargetMuscles {
+export enum Muscle {
   UPPER_BACK = 'parte superior de la espalda',
   LATS = 'dorsales',
   TRAPS = 'trapecios',
   SPINE = 'columna vertebral',
   RHOMBOIDS = 'romboides',
-  REAR_DELTS = 'deltoides traseros'
+  REAR_DELTS = 'deltoides traseros',
+  BICEPS = 'biceps',
+  FOREARMS = 'antebrazo',
+  SHOULDERS = 'hombros',
+  GLUTES = 'gluteos',
+  HAMSTRINGS = 'isquiotibiales',
+  CHEST = 'pecho',
+  TRICEPS = 'triceps',
+  WAIST = 'cintura'
 }

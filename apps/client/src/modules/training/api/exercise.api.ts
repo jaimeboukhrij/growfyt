@@ -6,7 +6,8 @@ import { buildQueryParams } from '@/core/utils/buildQuery'
 export const findAllExercise = async (query?: ExercisesQueryParams): Promise<Exercise[]> => {
   const searchParams = buildQueryParams<ExercisesQueryParams>(query)
   const response = await fetcher<ApiResponse<Exercise[]>>(`/training/exercises?${searchParams}`, {
-    revalidate: 300
+    revalidate: 300,
+    cache: 'force-cache'
   })
 
   if (!response.success) {
@@ -16,12 +17,17 @@ export const findAllExercise = async (query?: ExercisesQueryParams): Promise<Exe
   return response.data
 }
 
-export const findOneExercise = async (id: string): Promise<Exercise> => {
-  const response = await fetcher<ApiResponse<Exercise>>(`/training/exercises/${id}`)
+export const findOneExercise = async (slug: string): Promise<Exercise | undefined> => {
+  try {
+    const response = await fetcher<ApiResponse<Exercise>>(`/training/exercises/${slug}`)
 
-  if (!response.success) {
-    throw new Error(response.error)
+    if (!response.success) {
+      throw new Error(response.error)
+    }
+
+    return response.data
+  } catch (error) {
+    console.log(error)
+    return undefined
   }
-
-  return response.data
 }
