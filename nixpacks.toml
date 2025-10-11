@@ -10,8 +10,7 @@ cmds = [
   'pnpm --filter growfit-api build --no-deps',
   'cd apps/api && pnpm prisma:generate',
   'mkdir -p apps/api/node_modules/growfit-shared',
-  'cp -r packages/shared/dist apps/api/node_modules/growfit-shared/',
-  'cp packages/shared/package.json apps/api/node_modules/growfit-shared/'
+
 ]
 
 [start]
