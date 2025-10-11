@@ -4,6 +4,7 @@ import React, { Suspense } from 'react'
 import './globals.css'
 import { AppSidebar, AppTopMenu } from '@/components'
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
+import ReactQueryProvider from '@/providers/ReactQueryProvider'
 
 export const metadata: Metadata = {
   title: 'CoachPro - Plataforma Profesional para Coaches',
@@ -20,13 +21,15 @@ export default function RootLayout ({
     <html lang="es">
       <body className="font-sans  antialiased">
         <Suspense fallback={<div>Loading...</div>}>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <AppTopMenu title="Dashboard" description="Resumen general de tu actividad como coach" />
-
-              {children}</SidebarInset>
-          </SidebarProvider>
+          <ReactQueryProvider>
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <AppTopMenu title="Dashboard" description="Resumen general de tu actividad como coach" />
+                {children}
+              </SidebarInset>
+            </SidebarProvider>
+          </ReactQueryProvider>
         </Suspense>
       </body>
     </html>

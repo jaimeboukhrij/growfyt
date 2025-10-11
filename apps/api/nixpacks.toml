@@ -3,15 +3,21 @@ nixPkgs = ['nodejs_20', 'pnpm']
 
 [phases.install]
 cmds = [
-  'cd ../.. && pnpm install --frozen-lockfile'
+  'pnpm install --frozen-lockfile'
 ]
 
 [phases.build]
 cmds = [
-  'cd ../.. && pnpm --filter growfit-shared build',
-  'cd ../.. && pnpm --filter growfit-api build',
-  'pnpm prisma:generate'
+  'pnpm --filter growfit-shared build',
+  'pnpm --filter growfit-api build',
+  'cd apps/api && pnpm prisma generate',
+  'cd apps/api && pnpm prisma migrate deploy',
+  # ⬇️ Copia el paquete compartido (dist) al node_modules del API
+  'mkdir -p apps/api/node_modules/growfit-shared',
+  'cp -r packages/shared/dist apps/api/node_modules/growfit-shared/',
+  'cp packages/shared/package.json apps/api/node_modules/growfit-shared/'
 ]
 
 [start]
-cmd = 'pnpm prisma:migrate deploy && node dist/apps/api/src/main.js'
+# ⬇️ Arranca NestJS en modo producción
+cmd = 'cd apps/api && pnpm start:prod'

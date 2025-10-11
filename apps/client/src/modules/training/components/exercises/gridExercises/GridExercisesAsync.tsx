@@ -8,10 +8,10 @@ import { GridExercisesLoader } from './GridExercisesLoader'
 import { GridExercisesSkeleton } from './GridExercisesSkeleton'
 
 export default function GridExercisesAsync () {
-  const { exercises, showLoader, isFirstLoad, hasMore, loadingMore, loadMore } = useExercises(20)
+  const { exercises, showLoader, isFirstLoad, hasMore, loadingMore, loadMore, isCached } = useExercises()
   const { loaderRef } = useInfinityExercisesScroll({ loadingMore, loadMore, hasMore })
 
-  if (isFirstLoad) {
+  if (isFirstLoad && !isCached) {
     return <GridExercisesSkeleton />
   }
 
@@ -19,8 +19,7 @@ export default function GridExercisesAsync () {
     <section className="relative">
       {showLoader && (<GridExercisesLoader />)}
       <GridExercises exercises={exercises} />
-      {hasMore &&
-      (
+      {hasMore && (
         <div ref={loaderRef} className="flex justify-center py-4">
           {loadingMore && (
             <div className="w-8 h-8 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
