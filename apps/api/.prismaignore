@@ -1,0 +1,3 @@
+# Desactiva el hook automático de Prisma en Railway
+prisma/schema.prisma
+apps/api/prisma/schema.prisma
