@@ -19,11 +19,10 @@ export const Exercise = ({ exercise }: Props) => {
     >
       <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer h-full w-full hover:scale-102">
         <div
-          className="aspect-video bg-muted relative overflow-hidden"
+          className="aspect-video bg-muted relative overflow-hidden scale-[101%]"
           style={{
             backgroundImage: `url(${exercise.imageUrl})`,
             backgroundSize: 'cover',
-            backgroundPosition: '1px',
             backgroundRepeat: 'no-repeat'
           }}
           role="img"

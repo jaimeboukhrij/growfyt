@@ -1,18 +1,16 @@
-import { type BodyPart, type Exercise } from 'growfit-shared'
+'use client'
+
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
+import { type BodyPart } from 'growfit-shared'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useMemo } from 'react'
 
 import { findAllExercise } from '@/modules/training'
 
 export const useExercises = (initialLimit = 6) => {
   const searchParams = useSearchParams()
   const searchString = searchParams.toString()
-  const [exercises, setExercises] = useState<Exercise[]>([])
-  const [showLoader, setShowLoader] = useState(false)
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
-  const [offset, setOffset] = useState(0)
-  const [hasMore, setHasMore] = useState(true)
-  const [loadingMore, setLoadingMore] = useState(false)
+  const queryClient = useQueryClient()
 
   const requestParams = useMemo(() => {
     const params = new URLSearchParams(searchString)
@@ -22,47 +20,51 @@ export const useExercises = (initialLimit = 6) => {
     return { q, bodyPart }
   }, [searchString])
 
-  // Fetch initial exercises
-  useEffect(() => {
-    const fetchExercises = async () => {
-      setShowLoader(true)
-      try {
-        const data = await findAllExercise({ ...requestParams, limit: initialLimit, offset: 0 })
-        setExercises(data)
-        setOffset(data.length)
-        setHasMore(data.length === initialLimit)
-      } catch (err) {
-        console.error('Error loading exercises:', err)
-      } finally {
-        setShowLoader(false)
-        setIsFirstLoad(false)
-      }
-    }
-    void fetchExercises()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchString])
+  const queryKey = ['exercises', requestParams.q, requestParams.bodyPart]
 
-  const loadMore = useCallback(async () => {
-    if (!hasMore || loadingMore) return
-    setLoadingMore(true)
-    try {
-      const data = await findAllExercise({ ...requestParams, limit: initialLimit, offset })
-      setExercises(prev => [...prev, ...data])
-      setOffset(prev => prev + data.length)
-      setHasMore(data.length === initialLimit)
-    } catch (err) {
-      console.error('Error loading more exercises:', err)
-    } finally {
-      setLoadingMore(false)
+  const isCached = queryClient.getQueryData(queryKey) !== undefined
+
+  const {
+    data,
+    isLoading: isFirstLoad,
+    isFetchingNextPage: loadingMore,
+    hasNextPage: hasMore,
+    fetchNextPage,
+    error
+  } = useInfiniteQuery({
+    queryKey,
+    queryFn: async ({ pageParam = 0 }) => {
+      const data = await findAllExercise({
+        ...requestParams,
+        limit: initialLimit,
+        offset: pageParam
+      })
+      return data
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < initialLimit) {
+        return undefined
+      }
+      return allPages.reduce((acc, page) => acc + page.length, 0)
     }
-  }, [hasMore, loadingMore, requestParams, offset, initialLimit])
+  })
+
+  const exercises = data?.pages.flat() ?? []
+
+  const loadMore = async () => {
+    if (!hasMore || loadingMore) return
+    await fetchNextPage()
+  }
 
   return {
     exercises,
-    showLoader,
+    showLoader: isFirstLoad,
     isFirstLoad,
-    hasMore,
+    hasMore: hasMore ?? false,
     loadingMore,
-    loadMore
+    loadMore,
+    error,
+    isCached
   }
 }
